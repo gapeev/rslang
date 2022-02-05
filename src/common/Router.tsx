@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { AuthPage } from '../features/authPage/authPage';
+import { AuthPage } from '../features/authPage/AuthPage';
 import { Home } from '../features/home/Home';
 import { EnumRoutes } from './Enums';
 

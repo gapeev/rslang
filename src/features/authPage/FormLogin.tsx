@@ -1,6 +1,7 @@
 import './authPage.module.css';
 import { useForm } from 'react-hook-form';
 import { IDataLogIn } from '../../common/Interfaces';
+import { Button, TextField } from '@mui/material';
 
 export const FormLogin: React.FC = () => {
   const {
@@ -19,45 +20,41 @@ export const FormLogin: React.FC = () => {
   };
 
   return (
-    <>
-      <form
-        className="form"
-        onSubmit={handleSubmit((data: IDataLogIn) => {
-          validate(data);
+    <form
+      onSubmit={handleSubmit((data: IDataLogIn) => {
+        validate(data);
+      })}
+    >
+      <TextField
+        helperText="Please enter your email"
+        id="outlined-basic"
+        label="Email address"
+        variant="outlined"
+        margin="normal"
+        {...register('email')}
+        className="input"
+        fullWidth
+      />
+      <TextField
+        helperText="Please enter your password"
+        id="outlined-basic"
+        label="Password"
+        fullWidth
+        margin="normal"
+        variant="outlined"
+        type="password"
+        {...register('password', {
+          required: 'This is requiered',
+          minLength: {
+            value: 4,
+            message: 'Min length is four sympols',
+          },
         })}
-      >
-        <h3>Log in</h3>
-        <div className="htmlForm-group">
-          <label htmlFor="exampleInputEmail1">Email address</label>
-          <input
-            {...register('email', { required: true })}
-            type="email"
-            className="htmlForm-control"
-            id="exampleInputEmail1"
-            aria-describedby="emailHelp"
-            placeholder="Enter email"
-          />
-        </div>
-        <div className="htmlForm-group">
-          <label htmlFor="exampleInputPassword1">Password</label>
-          <input
-            {...register('password', {
-              required: 'This is requiered',
-              minLength: {
-                value: 4,
-                message: 'Min length is four sympols',
-              },
-            })}
-            type="password"
-            className="htmlForm-control"
-            id="exampleInputPassword1"
-            placeholder="Password"
-          />
-        </div>
-        <button type="submit" className="btn btn-primary">
-          Entry
-        </button>
-      </form>
-    </>
+        className="input"
+      />
+      <Button type="submit" className="btn btn-primary">
+        Войти
+      </Button>
+    </form>
   );
 };
