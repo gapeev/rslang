@@ -24,7 +24,6 @@ export async function axiosUserSignIn(data: IUserSignIn): Promise<JWTToken> {
   let response;
   try {
     response = await axios.post(signinUrl, data);
-    console.log('axiosUserSignIn', response.data);
   } catch (error) {
     if (response?.status === 403) {
       throw new Error('Incorrect e-mail or password');

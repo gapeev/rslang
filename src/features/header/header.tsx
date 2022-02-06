@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import AudiotrackIcon from '@mui/icons-material/Audiotrack';
@@ -31,10 +31,17 @@ export interface HeaderProps {
 
 export function Header({ title }: HeaderProps) {
   const [isDrawerOpen, setState] = React.useState(false);
+  const [textBtnLog, setTextBtnLog] = useState<string>();
+
   const dispatch = useDispatch();
   const location = useLocation();
-
+  const navigate = useNavigate();
   const isAuth = useSelector((state: RootState) => Boolean(state.user.user));
+  useEffect(() => {
+    console.log(isAuth);
+    isAuth ? setTextBtnLog('Выйти') : setTextBtnLog('Войти');
+  }, [isAuth]);
+
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
@@ -72,13 +79,15 @@ export function Header({ title }: HeaderProps) {
                 }`,
               }}
               color="inherit"
-              component={Link}
-              to={EnumRoutes.auth}
               onClick={() => {
-                dispatch(logoutUser());
+                if (textBtnLog === 'Выйти') {
+                  dispatch(logoutUser());
+                } else {
+                  navigate(EnumRoutes.auth);
+                }
               }}
             >
-              {isAuth ? 'Выйти' : 'Войти'}
+              {textBtnLog}
             </Button>
           </Toolbar>
         </Container>

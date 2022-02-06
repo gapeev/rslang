@@ -1,5 +1,5 @@
 import { RSLANG_USER } from './../../common/Enums';
-import { IUserSign, IUserSignIn, JWTToken } from './../../common/Interfaces';
+import { IUserSignIn, JWTToken } from './../../common/Interfaces';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { axiosUserSignIn } from './apiAuth';
 
@@ -36,8 +36,8 @@ export const authSlice = createSlice({
       state.token = action.payload.data;
     },
     logoutUser(state) {
-      state = { ...state, ...emptyLocalStorage };
-      console.log(state, 'logout');
+      state.user = emptyLocalStorage.user;
+      state.token = emptyLocalStorage.token;
       localStorage.setItem(RSLANG_USER, JSON.stringify(state));
     },
   },
