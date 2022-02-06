@@ -1,7 +1,10 @@
-import './authPage.module.css';
 import { useForm } from 'react-hook-form';
-import { IDataLogIn } from '../../common/Interfaces';
 import { Button, TextField } from '@mui/material';
+import { IUserSignIn } from '../../common/Interfaces';
+import { useDispatch } from 'react-redux';
+import { EnumRoutes } from '../../common/Enums';
+import { getToken, setUser } from './authSlice';
+import { useNavigate } from 'react-router-dom';
 
 export const FormLogin: React.FC = () => {
   const {
@@ -10,24 +13,28 @@ export const FormLogin: React.FC = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: 'admin@admin',
-      password: 'admin',
+      email: 'greg@gmail.com',
+      password: '11111111',
     },
   });
-
-  const validate = (data: IDataLogIn) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const validate = (data: IUserSignIn) => {
     console.log(data);
+    dispatch(setUser(data.email));
+    dispatch(getToken(data));
+    navigate(EnumRoutes.main);
   };
 
   return (
     <form
-      onSubmit={handleSubmit((data: IDataLogIn) => {
+      onSubmit={handleSubmit((data: IUserSignIn) => {
         validate(data);
       })}
     >
       <TextField
         helperText="Please enter your email"
-        id="outlined-basic"
+        id="outlined-basic1"
         label="Email address"
         variant="outlined"
         margin="normal"
@@ -37,7 +44,7 @@ export const FormLogin: React.FC = () => {
       />
       <TextField
         helperText="Please enter your password"
-        id="outlined-basic"
+        id="outlined-basic2"
         label="Password"
         fullWidth
         margin="normal"
@@ -53,7 +60,7 @@ export const FormLogin: React.FC = () => {
         className="input"
       />
       <Button type="submit" className="btn btn-primary">
-        Войти
+        Вход
       </Button>
     </form>
   );

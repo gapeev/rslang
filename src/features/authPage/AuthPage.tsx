@@ -2,9 +2,8 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { Card, CardContent, CardActions, Button } from '@mui/material';
+import { Card, CardContent } from '@mui/material';
 import { FormLogin } from './FormLogin';
 import { FormRegister } from './FormRegister';
 
@@ -63,11 +62,11 @@ export const AuthPage: React.FC = () => {
       <Card
         sx={{
           width: 400,
-          height: `${value === 0 ? '350px' : '600px'}`,
+          height: `${value === 0 ? '350px' : '470px'}`,
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          transition: 'height 0.4s ease-in-out',
+          transition: 'height 0.3s ease-in-out',
         }}
       >
         <CardContent>
@@ -78,8 +77,8 @@ export const AuthPage: React.FC = () => {
                 onChange={handleChange}
                 aria-label="basic tabs example"
               >
-                <Tab label="Item One" {...a11yProps(0)} />
-                <Tab label="Item Two" {...a11yProps(1)} />
+                <Tab label="Войти" {...a11yProps(0)} />
+                <Tab label="Регистрация" {...a11yProps(1)} />
               </Tabs>
             </Box>
             <TabPanel value={value} index={0}>

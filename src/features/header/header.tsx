@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import AudiotrackIcon from '@mui/icons-material/Audiotrack';
 import BarChartIcon from '@mui/icons-material/BarChart';
@@ -20,6 +20,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ShutterSpeedIcon from '@mui/icons-material/ShutterSpeed';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { EnumRoutes } from '../../common/Enums';
+import { logoutUser } from '../authPage/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
 
 export interface HeaderProps {
   title: string;
@@ -27,7 +31,10 @@ export interface HeaderProps {
 
 export function Header({ title }: HeaderProps) {
   const [isDrawerOpen, setState] = React.useState(false);
+  const dispatch = useDispatch();
+  const location = useLocation();
 
+  const isAuth = useSelector((state: RootState) => Boolean(state.user.user));
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
@@ -40,7 +47,6 @@ export function Header({ title }: HeaderProps) {
 
       setState(open);
     };
-
   return (
     <>
       <AppBar position="static">
@@ -59,8 +65,20 @@ export function Header({ title }: HeaderProps) {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               {title}
             </Typography>
-            <Button color="inherit" component={Link} to="/signin">
-              Войти
+            <Button
+              sx={{
+                display: `${
+                  location.pathname === EnumRoutes.auth ? 'none' : 'flex'
+                }`,
+              }}
+              color="inherit"
+              component={Link}
+              to={EnumRoutes.auth}
+              onClick={() => {
+                dispatch(logoutUser());
+              }}
+            >
+              {isAuth ? 'Выйти' : 'Войти'}
             </Button>
           </Toolbar>
         </Container>

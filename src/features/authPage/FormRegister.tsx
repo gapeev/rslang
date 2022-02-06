@@ -1,48 +1,39 @@
 import { TextField, Button } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { IDataLogIn } from '../../common/Interfaces';
-import { register } from '../../serviceWorker';
+import { IUserSignUp } from '../../common/Interfaces';
+import { axiosUserSignUp } from './apiAuth';
 
 export const FormRegister: React.FC = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<IUserSignUp>();
 
-  const validate = (data: any) => {
+  const validate = (data: IUserSignUp) => {
     console.log(data);
+
+    axiosUserSignUp(data);
   };
   return (
     <form
-      onSubmit={handleSubmit((data: any) => {
+      onSubmit={handleSubmit((data: IUserSignUp) => {
         validate(data);
       })}
     >
       <TextField
         helperText="Введите имя"
-        id="outlined-basic"
+        id="outlined-basic1"
         label="Имя"
         variant="outlined"
         margin="normal"
-        {...register('firstName')}
+        {...register('name')}
         className="input"
         fullWidth
-      />
-      <TextField
-        helperText="Введите фамилию"
-        id="outlined-basic"
-        label="Фамилия"
-        fullWidth
-        margin="normal"
-        variant="outlined"
-        type="password"
-        {...register('lastName')}
-        className="input"
       />
       <TextField
         helperText="Введите адрес электронной почты"
-        id="outlined-basic"
+        id="outlined-basic2"
         label="Электронная почта"
         fullWidth
         margin="normal"
@@ -53,7 +44,7 @@ export const FormRegister: React.FC = () => {
       />
       <TextField
         helperText="Придумайте пароль"
-        id="outlined-basic"
+        id="outlined-basic3"
         label="Пароль"
         fullWidth
         margin="normal"
@@ -69,7 +60,7 @@ export const FormRegister: React.FC = () => {
         className="input"
       />
       <Button type="submit" className="btn btn-primary">
-        Войти
+        Зарегистрироваться
       </Button>
     </form>
   );

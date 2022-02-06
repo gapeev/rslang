@@ -8,6 +8,7 @@ export const useRoutes = () => {
     <Routes>
       <Route path={EnumRoutes.home} element={<Home />}></Route>
       <Route path={EnumRoutes.auth} element={<AuthPage />}></Route>
+      <Route path={EnumRoutes.main} element={<Home />}></Route>
     </Routes>
   );
 };
