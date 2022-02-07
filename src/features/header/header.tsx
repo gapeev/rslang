@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import AudiotrackIcon from '@mui/icons-material/Audiotrack';
 import BarChartIcon from '@mui/icons-material/BarChart';
@@ -20,6 +20,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ShutterSpeedIcon from '@mui/icons-material/ShutterSpeed';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { EnumRoutes } from '../../common/Enums';
+import { logoutUser } from '../authPage/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
 
 export interface HeaderProps {
   title: string;
@@ -27,6 +31,16 @@ export interface HeaderProps {
 
 export function Header({ title }: HeaderProps) {
   const [isDrawerOpen, setState] = React.useState(false);
+  const [textBtnLog, setTextBtnLog] = useState<string>();
+
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isAuth = useSelector((state: RootState) => Boolean(state.user.user));
+  useEffect(() => {
+    console.log(isAuth);
+    isAuth ? setTextBtnLog('Выйти') : setTextBtnLog('Войти');
+  }, [isAuth]);
 
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -40,7 +54,6 @@ export function Header({ title }: HeaderProps) {
 
       setState(open);
     };
-
   return (
     <>
       <AppBar position="static">
@@ -59,8 +72,22 @@ export function Header({ title }: HeaderProps) {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               {title}
             </Typography>
-            <Button color="inherit" component={Link} to="/signin">
-              Войти
+            <Button
+              sx={{
+                display: `${
+                  location.pathname === EnumRoutes.auth ? 'none' : 'flex'
+                }`,
+              }}
+              color="inherit"
+              onClick={() => {
+                if (textBtnLog === 'Выйти') {
+                  dispatch(logoutUser());
+                } else {
+                  navigate(EnumRoutes.auth);
+                }
+              }}
+            >
+              {textBtnLog}
             </Button>
           </Toolbar>
         </Container>
