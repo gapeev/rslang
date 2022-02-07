@@ -3,7 +3,7 @@ import { Audiochallenge } from '../features/audiochallenge/Audiochallenge';
 import { AuthPage } from '../features/authPage/AuthPage';
 import { Home } from '../features/home/Home';
 import { EnumRoutes } from './Enums';
-
+import TextBookPage from '../features/textbook/TextBook';
 export const useRoutes = () => {
   return (
     <Routes>
@@ -14,6 +14,7 @@ export const useRoutes = () => {
         element={<Audiochallenge />}
       ></Route>
       <Route path={EnumRoutes.main} element={<Home />}></Route>
+      <Route path={EnumRoutes.textbook} element={<TextBookPage />}></Route>
     </Routes>
   );
 };

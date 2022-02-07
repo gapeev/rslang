@@ -3,5 +3,6 @@ export enum EnumRoutes {
   auth = '/signin',
   main = '/main',
   audiochallenge = '/audiochallenge',
+  textbook = '/textbook',
 }
 export const RSLANG_USER = 'RSLANG_USER';
