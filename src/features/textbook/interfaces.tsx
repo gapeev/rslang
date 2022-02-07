@@ -22,6 +22,7 @@ export interface userWord {
 export interface CardParam {
   id: string;
   word: string;
+  group: string;
   url: string;
   image: string;
   audio: string;
@@ -35,4 +36,6 @@ export interface CardParam {
   wordTranslate: string;
   userWords: userWord[];
   TOKEN: string;
+  USERID: string;
+  AUTH: boolean;
 }
