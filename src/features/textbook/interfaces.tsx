@@ -1,4 +1,5 @@
 export interface word {
+  _id?: string;
   id: string;
   group: number;
   page: number;
@@ -21,6 +22,7 @@ export interface userWord {
 }
 export interface CardParam {
   id: string;
+  _id?: string;
   word: string;
   group: string;
   url: string;

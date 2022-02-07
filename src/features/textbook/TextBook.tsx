@@ -42,7 +42,18 @@ const TextBookPage = () => {
     const wordsPromis = loadWords(
       BASE_URL + `words?group=${category - 1}&page=${page - 1}`
     );
-    arrPromis.push(wordsPromis);
+    const loadHardWords = loadUserWords(
+      BASE_URL +
+        `users/${USERID}/aggregatedWords?page=${
+          page - 1
+        }&wordsPerPage=20&filter=%7B%22userWord.difficulty%22%3A%22hard%22%7D`,
+      TOKEN
+    );
+    if (category === 7) {
+      arrPromis.push(loadHardWords);
+    } else {
+      arrPromis.push(wordsPromis);
+    }
     if (localStorage.getItem('auth')) {
       arrPromis.push(userPromis);
     }
@@ -51,7 +62,11 @@ const TextBookPage = () => {
         if (data2) {
           setUserWords(data2.data);
         }
-        setWords(data1.data);
+        if (data1.data[0].paginatedResults) {
+          setWords(data1.data[0].paginatedResults);
+        } else {
+          setWords(data1.data);
+        }
       })
     );
   }, [category, page]);
@@ -114,7 +129,7 @@ const TextBookPage = () => {
       </Container>
       <Container className={styles.cardsContainer}>
         {words.map((el: word) => (
-          <Container key={el.id}>
+          <Container key={el.id || el._id}>
             <TextBookCard
               id={el.id}
               word={el.word}
@@ -129,7 +144,8 @@ const TextBookPage = () => {
               textMeaningTranslate={el.textMeaningTranslate}
               wordTranslate={el.wordTranslate}
               userWords={userWords.filter(
-                (word: userWord) => word.wordId === el.id
+                (word: userWord) =>
+                  word.wordId === el.id || word.wordId === el._id
               )}
               image={el.image}
               url={BASE_URL}

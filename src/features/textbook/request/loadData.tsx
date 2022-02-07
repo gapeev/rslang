@@ -10,5 +10,10 @@ const loadUserWords = (url: string, TOKEN: string) => {
   };
   return axios.get(url, config);
 };
-
-export { loadWords, loadUserWords };
+const loadHardWords = (url: string, TOKEN: string) => {
+  const config = {
+    headers: { Authorization: `Bearer ${TOKEN}` },
+  };
+  return axios.get(url, config);
+};
+export { loadWords, loadUserWords, loadHardWords };

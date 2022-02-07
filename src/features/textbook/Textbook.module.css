@@ -1,6 +1,9 @@
 .paginationContainer {
   display: flex !important;
   align-items: center;
+  background-color: white;
+  border-radius: 15px;
+  margin-top: 10px;
 }
 .cardsContainer {
   margin: 0 auto !important;
@@ -32,10 +35,10 @@
   max-height: 150px;
 }
 .hard {
-  background-color: #e2474794 !important;
+  background-color: #e24747e5 !important;
 }
 .easy {
-  background-color: #34e73475 !important;
+  background-color: #34e734c9 !important;
 }
 .buttonControlContainer {
   display: flex !important;
