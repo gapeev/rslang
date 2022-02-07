@@ -40,4 +40,6 @@ export interface CardParam {
   TOKEN: string;
   USERID: string;
   AUTH: boolean;
+  stateCorrect: number;
+  stateSetCorrect: React.Dispatch<React.SetStateAction<number>>;
 }

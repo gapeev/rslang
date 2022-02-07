@@ -163,6 +163,8 @@ const TextBookPage = () => {
               TOKEN={TOKEN}
               USERID={USERID}
               AUTH={AUTH}
+              stateSetCorrect={setCorrectWords}
+              stateCorrect={correctWords}
             />
           </Container>
         ))}

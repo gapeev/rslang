@@ -77,6 +77,7 @@ function TextBookCard(props: CardParam) {
                     props.TOKEN,
                     props.id
                   );
+                  props.stateSetCorrect(props.stateCorrect - 1);
                 } else {
                   setColor(styles.easy);
                   changeDificulty(
@@ -87,6 +88,7 @@ function TextBookCard(props: CardParam) {
                     props.TOKEN,
                     props.id
                   );
+                  props.stateSetCorrect(props.stateCorrect + 1);
                 }
               }}
             >
@@ -107,6 +109,7 @@ function TextBookCard(props: CardParam) {
                     props.TOKEN,
                     props.id
                   );
+                  props.stateSetCorrect(props.stateCorrect - 1);
                 } else {
                   setColor(styles.hard);
                   changeDificulty(
@@ -117,6 +120,7 @@ function TextBookCard(props: CardParam) {
                     props.TOKEN,
                     props.id
                   );
+                  props.stateSetCorrect(props.stateCorrect - 1);
                 }
               }}
             >
