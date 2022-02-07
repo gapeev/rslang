@@ -10,8 +10,6 @@ import {
   Box,
 } from '@mui/material';
 import TextBookCard from './TextBookCard';
-import { Header } from '../header/header';
-import { Footer } from '../footer/footer';
 import styles from './Textbook.module.css';
 import { word } from './interfaces';
 import { loadWords, loadUserWords } from './request/loadData';
@@ -22,7 +20,7 @@ import backgroundGen from './core/backgroundGen';
 import calcCorrectWords from './core/calcCorrectWords';
 const USERID = '61feaf842989cc0016b27424';
 const TOKEN =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZmVhZjg0Mjk4OWNjMDAxNmIyNzQyNCIsImlhdCI6MTY0NDI1MzI5MCwiZXhwIjoxNjQ0MjY3NjkwfQ.JyUJpLIB8GY4PfZFQxZwmdm2nkzLphE_Klf97yPiTM8';
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZmVhZjg0Mjk4OWNjMDAxNmIyNzQyNCIsImlhdCI6MTY0NDI3MTM2NywiZXhwIjoxNjQ0Mjg1NzY3fQ.5F-q4YD-o8t--EjL4-1Ldctg0OVWJzFFNbEFToVYRvM';
 const BASE_URL = 'https://learnwords-team31.herokuapp.com/';
 
 const TextBookPage = () => {
@@ -77,7 +75,6 @@ const TextBookPage = () => {
   }, [category, page]);
   return (
     <Box className={backgroundGen(category)}>
-      <Header title="Учебник" />
       <Container
         className={
           styles.paginationContainer +
@@ -169,7 +166,6 @@ const TextBookPage = () => {
           </Container>
         ))}
       </Container>
-      <Footer />
     </Box>
   );
 };
