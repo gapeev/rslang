@@ -16,23 +16,17 @@ import styles from './Textbook.module.css';
 import { word } from './interfaces';
 import { loadWords, loadUserWords } from './request/loadData';
 import { userWord } from './interfaces';
-function getURLParameter(sUrl: string, sParam: string) {
-  let sPageURL = sUrl.substring(sUrl.indexOf('?') + 1);
-  let sURLVariables = sPageURL.split('&');
-  for (let i = 0; i < sURLVariables.length; i++) {
-    let sParameterName = sURLVariables[i].split('=');
-    if (sParameterName[0] === sParam) {
-      return sParameterName[1];
-    }
-  }
-}
+import axios, { AxiosResponse } from 'axios';
+import getURLParameter from './core/getUrlParam';
+import backgroundGen from './core/backgroundGen';
 const USERID = '61feaf842989cc0016b27424';
 const TOKEN =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZmVhZjg0Mjk4OWNjMDAxNmIyNzQyNCIsImlhdCI6MTY0NDE3NDQ4MywiZXhwIjoxNjQ0MTg4ODgzfQ.U924P1RHSipbZLdWeePiOZCV9uecPk9f17ZSDxTCEfY';
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZmVhZjg0Mjk4OWNjMDAxNmIyNzQyNCIsImlhdCI6MTY0NDIzODQ5NiwiZXhwIjoxNjQ0MjUyODk2fQ.tdttH3wxMb8KPOoSi4CFORsgCfMPv-3Tvnf-Z99h31w';
 const BASE_URL = 'https://learnwords-team31.herokuapp.com/';
+
 const TextBookPage = () => {
   let location = useLocation();
-  const AUTH = localStorage.getItem('auth') || false;
+  const AUTH = !!localStorage.getItem('auth') || false;
   const [words, setWords] = useState([]);
   const [userWords, setUserWords] = useState([]);
   const [category, setCategory] = useState(
@@ -43,22 +37,28 @@ const TextBookPage = () => {
   );
   const pageQty = 30;
   useEffect(() => {
-    loadUserWords(BASE_URL + `users/${USERID}/words`, TOKEN).then(
-      ({ data }) => {
-        setUserWords(data);
-      }
+    const arrPromis: Promise<AxiosResponse>[] = [];
+    const userPromis = loadUserWords(BASE_URL + `users/${USERID}/words`, TOKEN);
+    const wordsPromis = loadWords(
+      BASE_URL + `words?group=${category - 1}&page=${page - 1}`
     );
-    loadWords(BASE_URL + `words?group=${category - 1}&page=${page - 1}`).then(
-      ({ data }) => {
-        setWords(data);
-      }
+    arrPromis.push(wordsPromis);
+    if (localStorage.getItem('auth')) {
+      arrPromis.push(userPromis);
+    }
+    axios.all(arrPromis).then(
+      axios.spread((data1, data2) => {
+        if (data2) {
+          setUserWords(data2.data);
+        }
+        setWords(data1.data);
+      })
     );
   }, [category, page]);
 
   return (
-    <Box>
+    <Box className={backgroundGen(category)}>
       <Header title="Учебник" />
-
       <Container className={styles.paginationContainer}>
         <Select
           value={category}
@@ -118,6 +118,7 @@ const TextBookPage = () => {
             <TextBookCard
               id={el.id}
               word={el.word}
+              group={el.id}
               audio={el.audio}
               audioMeaning={el.audioMeaning}
               audioExample={el.audioExample}
@@ -133,6 +134,8 @@ const TextBookPage = () => {
               image={el.image}
               url={BASE_URL}
               TOKEN={TOKEN}
+              USERID={USERID}
+              AUTH={AUTH}
             />
           </Container>
         ))}

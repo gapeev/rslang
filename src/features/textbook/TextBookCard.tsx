@@ -55,36 +55,42 @@ function TextBookCard(props: CardParam) {
             {`${props.textMeaningTranslate}`}
           </Typography>
         </CardContent>
-        <Container className={styles.buttonControlContainer}>
-          <Button
-            variant="contained"
-            color="success"
-            className={styles.buttonControl}
-            onClick={() => {
-              if (color === styles.easy) {
-                setColor('');
-              } else {
-                setColor(styles.easy);
-              }
-            }}
+        {
+          <Container
+            className={
+              props.AUTH ? styles.buttonControlContainer : styles.hideContainer
+            }
           >
-            Изучено
-          </Button>
-          <Button
-            variant="outlined"
-            color="error"
-            className={styles.buttonControl}
-            onClick={() => {
-              if (color === styles.hard) {
-                setColor('');
-              } else {
-                setColor(styles.hard);
-              }
-            }}
-          >
-            Сложное
-          </Button>
-        </Container>
+            <Button
+              variant="contained"
+              color="success"
+              className={styles.buttonControl}
+              onClick={() => {
+                if (color === styles.easy) {
+                  setColor('');
+                } else {
+                  setColor(styles.easy);
+                }
+              }}
+            >
+              Изучено
+            </Button>
+            <Button
+              variant="outlined"
+              color="error"
+              className={styles.buttonControl}
+              onClick={() => {
+                if (color === styles.hard) {
+                  setColor('');
+                } else {
+                  setColor(styles.hard);
+                }
+              }}
+            >
+              Сложное
+            </Button>
+          </Container>
+        }
       </Container>
     </Card>
   );
