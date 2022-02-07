@@ -19,6 +19,7 @@ import { userWord } from './interfaces';
 import axios, { AxiosResponse } from 'axios';
 import getURLParameter from './core/getUrlParam';
 import backgroundGen from './core/backgroundGen';
+import calcCorrectWords from './core/calcCorrectWords';
 const USERID = '61feaf842989cc0016b27424';
 const TOKEN =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZmVhZjg0Mjk4OWNjMDAxNmIyNzQyNCIsImlhdCI6MTY0NDI1MzI5MCwiZXhwIjoxNjQ0MjY3NjkwfQ.JyUJpLIB8GY4PfZFQxZwmdm2nkzLphE_Klf97yPiTM8';
@@ -36,6 +37,7 @@ const TextBookPage = () => {
     +getURLParameter(location.search, 'page')! || 1
   );
   const [pageQty, setpageQty] = useState(30);
+  const [correctWords, setCorrectWords] = useState(0);
   useEffect(() => {
     const arrPromis: Promise<AxiosResponse>[] = [];
     const userPromis = loadUserWords(BASE_URL + `users/${USERID}/words`, TOKEN);
@@ -61,6 +63,7 @@ const TextBookPage = () => {
       axios.spread((data1, data2) => {
         if (data2) {
           setUserWords(data2.data);
+          setCorrectWords(calcCorrectWords(data1.data, data2.data));
         }
         if (data1.data[0].paginatedResults) {
           setWords(data1.data[0].paginatedResults);
@@ -72,11 +75,15 @@ const TextBookPage = () => {
       })
     );
   }, [category, page]);
-
   return (
     <Box className={backgroundGen(category)}>
       <Header title="Учебник" />
-      <Container className={styles.paginationContainer}>
+      <Container
+        className={
+          styles.paginationContainer +
+          ` ${correctWords === 20 ? styles.easy : ' '}`
+        }
+      >
         <Select
           value={category}
           label="Category"
@@ -117,6 +124,7 @@ const TextBookPage = () => {
           className={styles.button}
           component={Link}
           to={`/audiochallenge?group=${category}&page=${page}`}
+          disabled={correctWords === 20 ? true : false}
         >
           Аудиовызов
         </Button>
@@ -125,6 +133,7 @@ const TextBookPage = () => {
           className={styles.button}
           component={Link}
           to={`/sprint?group=${category}&page=${page}`}
+          disabled={correctWords === 20 ? true : false}
         >
           Спринт
         </Button>
