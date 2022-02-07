@@ -7,6 +7,7 @@ import parse from 'html-react-parser';
 import styles from './Textbook.module.css';
 import { useState } from 'react';
 import { CardParam } from './interfaces';
+import changeDificulty from './core/changeDificulty';
 function TextBookCard(props: CardParam) {
   const defaultColor = () => {
     if (props.userWords[0]) {
@@ -68,8 +69,24 @@ function TextBookCard(props: CardParam) {
               onClick={() => {
                 if (color === styles.easy) {
                   setColor('');
+                  changeDificulty(
+                    props.url,
+                    'normal',
+                    props.userWords[0],
+                    props.USERID,
+                    props.TOKEN,
+                    props.id
+                  );
                 } else {
                   setColor(styles.easy);
+                  changeDificulty(
+                    props.url,
+                    'easy',
+                    props.userWords[0],
+                    props.USERID,
+                    props.TOKEN,
+                    props.id
+                  );
                 }
               }}
             >
@@ -82,8 +99,24 @@ function TextBookCard(props: CardParam) {
               onClick={() => {
                 if (color === styles.hard) {
                   setColor('');
+                  changeDificulty(
+                    props.url,
+                    'normal',
+                    props.userWords[0],
+                    props.USERID,
+                    props.TOKEN,
+                    props.id
+                  );
                 } else {
                   setColor(styles.hard);
+                  changeDificulty(
+                    props.url,
+                    'hard',
+                    props.userWords[0],
+                    props.USERID,
+                    props.TOKEN,
+                    props.id
+                  );
                 }
               }}
             >

@@ -1,14 +1,25 @@
 import axios from 'axios';
-const updateWord = (url: string, TOKEN: string) => {
+import { userWord } from '../interfaces';
+const updateWord = (url: string, TOKEN: string, user: userWord) => {
   const config = {
-    headers: { Authorization: `Bearer ${TOKEN}` },
+    headers: {
+      Authorization: `Bearer ${TOKEN}`,
+    },
   };
-  return axios.get(url, config);
+  const data = {
+    difficulty: user.difficulty,
+  };
+  axios.put(url, data, config);
 };
-const createWord = (url: string, TOKEN: string) => {
+const createWord = (url: string, TOKEN: string, difficulty: string) => {
   const config = {
-    headers: { Authorization: `Bearer ${TOKEN}` },
+    headers: {
+      Authorization: `Bearer ${TOKEN}`,
+    },
   };
-  return axios.get(url, config);
+  const data = {
+    difficulty: difficulty,
+  };
+  axios.post(url, data, config);
 };
 export { updateWord, createWord };
