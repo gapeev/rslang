@@ -21,7 +21,7 @@ import getURLParameter from './core/getUrlParam';
 import backgroundGen from './core/backgroundGen';
 const USERID = '61feaf842989cc0016b27424';
 const TOKEN =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZmVhZjg0Mjk4OWNjMDAxNmIyNzQyNCIsImlhdCI6MTY0NDIzODQ5NiwiZXhwIjoxNjQ0MjUyODk2fQ.tdttH3wxMb8KPOoSi4CFORsgCfMPv-3Tvnf-Z99h31w';
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZmVhZjg0Mjk4OWNjMDAxNmIyNzQyNCIsImlhdCI6MTY0NDI1MzI5MCwiZXhwIjoxNjQ0MjY3NjkwfQ.JyUJpLIB8GY4PfZFQxZwmdm2nkzLphE_Klf97yPiTM8';
 const BASE_URL = 'https://learnwords-team31.herokuapp.com/';
 
 const TextBookPage = () => {
@@ -35,7 +35,7 @@ const TextBookPage = () => {
   const [page, setPage] = useState(
     +getURLParameter(location.search, 'page')! || 1
   );
-  const pageQty = 30;
+  const [pageQty, setpageQty] = useState(30);
   useEffect(() => {
     const arrPromis: Promise<AxiosResponse>[] = [];
     const userPromis = loadUserWords(BASE_URL + `users/${USERID}/words`, TOKEN);
@@ -64,7 +64,9 @@ const TextBookPage = () => {
         }
         if (data1.data[0].paginatedResults) {
           setWords(data1.data[0].paginatedResults);
+          setpageQty(Math.ceil(data1.data[0].totalCount[0].count / 20));
         } else {
+          setpageQty(30);
           setWords(data1.data);
         }
       })
@@ -114,7 +116,7 @@ const TextBookPage = () => {
           variant="contained"
           className={styles.button}
           component={Link}
-          to={`/audiochallenge`}
+          to={`/audiochallenge?group=${category}&page=${page}`}
         >
           Аудиовызов
         </Button>
@@ -122,7 +124,7 @@ const TextBookPage = () => {
           variant="contained"
           className={styles.button}
           component={Link}
-          to={`/sprint`}
+          to={`/sprint?group=${category}&page=${page}`}
         >
           Спринт
         </Button>
