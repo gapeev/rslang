@@ -100,3 +100,7 @@
   background-attachment: fixed;
   background-size: cover;
 }
+.scroll {
+  height: 50px !important;
+  width: 60px !important;
+}

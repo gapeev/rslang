@@ -23,7 +23,8 @@ import axios, { AxiosResponse } from 'axios';
 import getURLParameter from './core/getUrlParam';
 import backgroundGen from './core/backgroundGen';
 import calcCorrectWords from './core/calcCorrectWords';
-
+import ScrollToTop from 'react-scroll-up';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 const BASE_URL = 'https://learnwords-team31.herokuapp.com/';
 
 const TextBookPage = () => {
@@ -199,6 +200,9 @@ const TextBookPage = () => {
           </Container>
         ))}
       </Container>
+      <ScrollToTop showUnder={160}>
+        <ArrowUpwardIcon className={styles.scroll} />
+      </ScrollToTop>
     </Box>
   );
 };
