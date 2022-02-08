@@ -8,6 +8,8 @@ import styles from './Textbook.module.css';
 import { useState } from 'react';
 import { CardParam } from './interfaces';
 import changeDificulty from './core/changeDificulty';
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+
 function TextBookCard(props: CardParam) {
   const defaultColor = () => {
     if (props.userWords[0]) {
@@ -19,7 +21,9 @@ function TextBookCard(props: CardParam) {
     }
     return '';
   };
+  const WORDID = props.id || props._id;
   const [color, setColor] = useState(defaultColor);
+
   return (
     <Card key={props.id} className={`${styles.card} ${color}`}>
       <Container className={styles.cardContent}>
@@ -34,7 +38,19 @@ function TextBookCard(props: CardParam) {
           }}
         >
           <Typography gutterBottom variant="h5" component="div">
-            {props.word + ' - ' + props.transcription}
+            {props.word + ' - ' + props.transcription}{' '}
+            {
+              <VolumeUpIcon
+                className="cards-sound"
+                onClick={() => {
+                  props.setAduioList([
+                    props.url + props.audio,
+                    props.url + props.audioMeaning,
+                    props.url + props.audioExample,
+                  ]);
+                }}
+              ></VolumeUpIcon>
+            }
           </Typography>
           <Typography variant="h6" color="text.secondary">
             {props.wordTranslate}
@@ -59,7 +75,7 @@ function TextBookCard(props: CardParam) {
         {
           <Container
             className={
-              props.AUTH ? styles.buttonControlContainer : styles.hideContainer
+              props.TOKEN ? styles.buttonControlContainer : styles.hideContainer
             }
           >
             <Button
@@ -75,8 +91,13 @@ function TextBookCard(props: CardParam) {
                     props.userWords[0],
                     props.USERID,
                     props.TOKEN,
-                    props.id
+                    WORDID
                   );
+                  if (props.category === 7) {
+                    props.setAllWords(
+                      props.allWords.filter((el) => el.id !== WORDID)
+                    );
+                  }
                   props.stateSetCorrect(props.stateCorrect - 1);
                 } else {
                   setColor(styles.easy);
@@ -86,8 +107,13 @@ function TextBookCard(props: CardParam) {
                     props.userWords[0],
                     props.USERID,
                     props.TOKEN,
-                    props.id
+                    WORDID
                   );
+                  if (props.category === 7) {
+                    props.setAllWords(
+                      props.allWords.filter((el) => el.id !== WORDID)
+                    );
+                  }
                   props.stateSetCorrect(props.stateCorrect + 1);
                 }
               }}
@@ -107,8 +133,13 @@ function TextBookCard(props: CardParam) {
                     props.userWords[0],
                     props.USERID,
                     props.TOKEN,
-                    props.id
+                    WORDID
                   );
+                  if (props.category === 7) {
+                    props.setAllWords(
+                      props.allWords.filter((el) => el.id !== WORDID)
+                    );
+                  }
                   props.stateSetCorrect(props.stateCorrect - 1);
                 } else {
                   setColor(styles.hard);
@@ -118,7 +149,7 @@ function TextBookCard(props: CardParam) {
                     props.userWords[0],
                     props.USERID,
                     props.TOKEN,
-                    props.id
+                    WORDID
                   );
                   props.stateSetCorrect(props.stateCorrect - 1);
                 }

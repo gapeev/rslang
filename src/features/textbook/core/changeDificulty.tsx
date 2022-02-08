@@ -6,7 +6,7 @@ const changeDificulty = (
   userWord: userWord,
   USERID: string,
   TOKEN: string,
-  wordID: string
+  wordID: string | undefined
 ) => {
   if (!userWord) {
     createWord(BASEURL + `users/${USERID}/words/${wordID}`, TOKEN, dificulty);

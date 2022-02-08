@@ -1,5 +1,5 @@
 export interface word {
-  _id?: string;
+  _id?: string | undefined;
   id: string;
   group: number;
   page: number;
@@ -22,7 +22,7 @@ export interface userWord {
 }
 export interface CardParam {
   id: string;
-  _id?: string;
+  _id: string | undefined;
   word: string;
   group: string;
   url: string;
@@ -40,6 +40,10 @@ export interface CardParam {
   TOKEN: string;
   USERID: string;
   AUTH: boolean;
+  category: number;
   stateCorrect: number;
   stateSetCorrect: React.Dispatch<React.SetStateAction<number>>;
+  setAduioList: React.Dispatch<React.SetStateAction<string[]>>;
+  allWords: word[];
+  setAllWords: React.Dispatch<React.SetStateAction<word[]>>;
 }
