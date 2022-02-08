@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Link as NavLink, useLocation, Link } from 'react-router-dom';
+import {
+  Link as NavLink,
+  useLocation,
+  Link,
+  useNavigate,
+} from 'react-router-dom';
 import {
   Pagination,
   PaginationItem,
@@ -23,6 +28,7 @@ const BASE_URL = 'https://learnwords-team31.herokuapp.com/';
 
 const TextBookPage = () => {
   let location = useLocation();
+  const navigate = useNavigate();
   const AUTH =
     JSON.parse(localStorage.getItem('RSLANG_USER') as string) || false;
   const TOKEN = AUTH ? AUTH.token.token : '';
@@ -80,7 +86,7 @@ const TextBookPage = () => {
         }
       })
     );
-  }, [TOKEN, USERID, category, page, words]);
+  }, [TOKEN, USERID, category, page]);
   useEffect(() => {
     const audio = new Audio();
     audio.src = audioList[0];
@@ -110,9 +116,7 @@ const TextBookPage = () => {
           label="Category"
           onChange={(event) => {
             setCategory(Number(event.target.value));
-            window.location.assign(
-              `/textbook?group=${event.target.value}&page=${page}`
-            );
+            navigate(`/textbook?group=${event.target.value}&page=${page}`);
           }}
         >
           <MenuItem value={1}>Уровень 1</MenuItem>
@@ -144,7 +148,7 @@ const TextBookPage = () => {
           variant="contained"
           className={styles.button}
           component={Link}
-          to={`/audiochallenge?group=${category}&page=${page}`}
+          to={`/audiochallenge?group=${category - 1}&page=${page - 1}`}
           disabled={correctWords === 20 ? true : false}
         >
           Аудиовызов
@@ -153,7 +157,7 @@ const TextBookPage = () => {
           variant="contained"
           className={styles.button}
           component={Link}
-          to={`/sprint?group=${category}&page=${page}`}
+          to={`/sprint?group=${category - 1}&page=${page - 1}`}
           disabled={correctWords === 20 ? true : false}
         >
           Спринт
