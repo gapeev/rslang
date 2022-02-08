@@ -18,15 +18,16 @@ import axios, { AxiosResponse } from 'axios';
 import getURLParameter from './core/getUrlParam';
 import backgroundGen from './core/backgroundGen';
 import calcCorrectWords from './core/calcCorrectWords';
-const USERID = '61feaf842989cc0016b27424';
-const TOKEN =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZmVhZjg0Mjk4OWNjMDAxNmIyNzQyNCIsImlhdCI6MTY0NDI3MTM2NywiZXhwIjoxNjQ0Mjg1NzY3fQ.5F-q4YD-o8t--EjL4-1Ldctg0OVWJzFFNbEFToVYRvM';
+
 const BASE_URL = 'https://learnwords-team31.herokuapp.com/';
 
 const TextBookPage = () => {
   let location = useLocation();
-  const AUTH = !!localStorage.getItem('auth') || false;
-  const [words, setWords] = useState([]);
+  const AUTH =
+    JSON.parse(localStorage.getItem('RSLANG_USER') as string) || false;
+  const TOKEN = AUTH ? AUTH.token.token : '';
+  const USERID = AUTH ? AUTH.token.userId : '';
+  const [words, setWords] = useState<word[]>([]);
   const [userWords, setUserWords] = useState([]);
   const [category, setCategory] = useState(
     +getURLParameter(location.search, 'group')! || 1
@@ -36,25 +37,30 @@ const TextBookPage = () => {
   );
   const [pageQty, setpageQty] = useState(30);
   const [correctWords, setCorrectWords] = useState(0);
+  const [audioList, setAudioList] = useState<string[]>([]);
   useEffect(() => {
     const arrPromis: Promise<AxiosResponse>[] = [];
-    const userPromis = loadUserWords(BASE_URL + `users/${USERID}/words`, TOKEN);
     const wordsPromis = loadWords(
       BASE_URL + `words?group=${category - 1}&page=${page - 1}`
     );
-    const loadHardWords = loadUserWords(
-      BASE_URL +
-        `users/${USERID}/aggregatedWords?page=${
-          page - 1
-        }&wordsPerPage=20&filter=%7B%22userWord.difficulty%22%3A%22hard%22%7D`,
-      TOKEN
-    );
+
     if (category === 7) {
+      const loadHardWords = loadUserWords(
+        BASE_URL +
+          `users/${USERID}/aggregatedWords?page=${
+            page - 1
+          }&wordsPerPage=20&filter=%7B%22userWord.difficulty%22%3A%22hard%22%7D`,
+        TOKEN
+      );
       arrPromis.push(loadHardWords);
     } else {
       arrPromis.push(wordsPromis);
     }
-    if (localStorage.getItem('auth')) {
+    if (TOKEN) {
+      const userPromis = loadUserWords(
+        BASE_URL + `users/${USERID}/words`,
+        TOKEN
+      );
       arrPromis.push(userPromis);
     }
     axios.all(arrPromis).then(
@@ -65,14 +71,32 @@ const TextBookPage = () => {
         }
         if (data1.data[0].paginatedResults) {
           setWords(data1.data[0].paginatedResults);
-          setpageQty(Math.ceil(data1.data[0].totalCount[0].count / 20));
+          if (data1.data[0].totalCount[0]) {
+            setpageQty(Math.ceil(data1.data[0].totalCount[0].count / 20));
+          }
         } else {
           setpageQty(30);
           setWords(data1.data);
         }
       })
     );
-  }, [category, page]);
+  }, [TOKEN, USERID, category, page, words]);
+  useEffect(() => {
+    const audio = new Audio();
+    audio.src = audioList[0];
+    audio.play();
+    audio.onended = () => {
+      audio.src = audioList[1];
+      audio.play();
+      audio.onended = () => {
+        audio.src = audioList[2];
+        audio.play();
+        audio.onended = () => {
+          audio.pause();
+        };
+      };
+    };
+  }, [audioList]);
   return (
     <Box className={backgroundGen(category)}>
       <Container
@@ -97,7 +121,7 @@ const TextBookPage = () => {
           <MenuItem value={4}>Уровень 4</MenuItem>
           <MenuItem value={5}>Уровень 5</MenuItem>
           <MenuItem value={6}>Уровень 6</MenuItem>
-          {AUTH ? <MenuItem value={7}>Сложные слова</MenuItem> : ''}
+          {TOKEN ? <MenuItem value={7}>Сложные слова</MenuItem> : ''}
         </Select>
         {!!pageQty && (
           <Pagination
@@ -140,6 +164,7 @@ const TextBookPage = () => {
           <Container key={el.id || el._id}>
             <TextBookCard
               id={el.id}
+              _id={el._id}
               word={el.word}
               group={el.id}
               audio={el.audio}
@@ -162,6 +187,10 @@ const TextBookPage = () => {
               AUTH={AUTH}
               stateSetCorrect={setCorrectWords}
               stateCorrect={correctWords}
+              category={category}
+              setAduioList={setAudioList}
+              allWords={words}
+              setAllWords={setWords}
             />
           </Container>
         ))}
