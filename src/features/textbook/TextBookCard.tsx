@@ -9,7 +9,6 @@ import { useState } from 'react';
 import { CardParam } from './interfaces';
 import changeDificulty from './core/changeDificulty';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
-
 function TextBookCard(props: CardParam) {
   const defaultColor = () => {
     if (props.userWords[0]) {
@@ -21,6 +20,7 @@ function TextBookCard(props: CardParam) {
     }
     return '';
   };
+
   const WORDID = props.id || props._id;
   const [color, setColor] = useState(defaultColor);
 
@@ -69,7 +69,7 @@ function TextBookCard(props: CardParam) {
             {parse(props.textExample)}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {`${props.textMeaningTranslate}`}
+            {`${props.textExampleTranslate}`}
           </Typography>
         </CardContent>
         {
@@ -110,9 +110,9 @@ function TextBookCard(props: CardParam) {
                     WORDID
                   );
                   if (props.category === 7) {
-                    props.setAllWords(
-                      props.allWords.filter((el) => el.id !== WORDID)
-                    );
+                    setTimeout(() => {
+                      window.location.reload();
+                    }, 1000);
                   }
                   props.stateSetCorrect(props.stateCorrect + 1);
                 }
@@ -136,9 +136,9 @@ function TextBookCard(props: CardParam) {
                     WORDID
                   );
                   if (props.category === 7) {
-                    props.setAllWords(
-                      props.allWords.filter((el) => el.id !== WORDID)
-                    );
+                    setTimeout(() => {
+                      window.location.reload();
+                    }, 1000);
                   }
                   props.stateSetCorrect(props.stateCorrect - 1);
                 } else {
