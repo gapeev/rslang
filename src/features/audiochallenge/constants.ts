@@ -1,0 +1,9 @@
+export const BASE_URL = 'https://learnwords-team31.herokuapp.com/';
+export const GROUPS_COUNT_IN_GAME = 6;
+export const HARD_GROUP_INDEX = 6;
+export const NO_INDEX = -1;
+export const NO_PAGE = -1;
+export const WORDS_PER_PAGE = 20;
+export const PAGES_COUNT = 30;
+export const WRONG_ANSWERS_COUNT = 4;
+export const RIGHT_ANSWERS_ROW_TO_EASY = 3;
