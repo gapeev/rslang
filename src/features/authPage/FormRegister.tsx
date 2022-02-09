@@ -4,11 +4,7 @@ import { IUserSignUp } from '../../common/Interfaces';
 import { axiosUserSignUp } from './apiAuth';
 
 export const FormRegister: React.FC = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IUserSignUp>();
+  const { register, handleSubmit } = useForm<IUserSignUp>();
 
   const validate = (data: IUserSignUp) => {
     console.log(data);
