@@ -19,7 +19,7 @@ export async function fetchWords(
   user: User
 ): Promise<Word[]> {
   const pageNumber = page === NO_PAGE ? random(0, PAGES_COUNT - 1) : page;
-  const useAllWords = page === undefined;
+  const useAllWords = page === NO_PAGE;
 
   const words: Word[] =
     group === HARD_GROUP_INDEX && user.isAuth
