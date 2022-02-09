@@ -114,7 +114,13 @@ function TextBookCard(props: CardParam) {
                       window.location.reload();
                     }, 1000);
                   }
-                  props.stateSetCorrect(props.stateCorrect + 1);
+                  if (color === styles.hard) {
+                    props.setWrongWords(props.wrongWords - 1);
+                    props.stateSetCorrect(props.stateCorrect + 1);
+                  }
+                  if (color === '') {
+                    props.stateSetCorrect(props.stateCorrect + 1);
+                  }
                 }
               }}
             >
@@ -140,7 +146,7 @@ function TextBookCard(props: CardParam) {
                       window.location.reload();
                     }, 1000);
                   }
-                  props.stateSetCorrect(props.stateCorrect - 1);
+                  props.setWrongWords(props.wrongWords - 1);
                 } else {
                   setColor(styles.hard);
                   changeDificulty(
@@ -151,7 +157,13 @@ function TextBookCard(props: CardParam) {
                     props.TOKEN,
                     WORDID
                   );
-                  props.stateSetCorrect(props.stateCorrect - 1);
+                  if (color === styles.easy) {
+                    props.stateSetCorrect(props.stateCorrect - 1);
+                    props.setWrongWords(props.wrongWords + 1);
+                  }
+                  if (color === '') {
+                    props.setWrongWords(props.wrongWords + 1);
+                  }
                 }
               }}
             >

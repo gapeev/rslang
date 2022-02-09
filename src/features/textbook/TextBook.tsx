@@ -44,6 +44,7 @@ const TextBookPage = () => {
   );
   const [pageQty, setpageQty] = useState(30);
   const [correctWords, setCorrectWords] = useState(0);
+  const [wrongWords, setWrongWords] = useState(0);
   const [audioList, setAudioList] = useState<string[]>([]);
   useEffect(() => {
     const arrPromis: Promise<AxiosResponse>[] = [];
@@ -74,7 +75,8 @@ const TextBookPage = () => {
       axios.spread((data1, data2) => {
         if (data2) {
           setUserWords(data2.data);
-          setCorrectWords(calcCorrectWords(data1.data, data2.data));
+          setCorrectWords(calcCorrectWords(data1.data, data2.data, 'easy'));
+          setWrongWords(calcCorrectWords(data1.data, data2.data, 'hard'));
         }
         if (data1.data[0].paginatedResults) {
           setWords(data1.data[0].paginatedResults);
@@ -106,18 +108,18 @@ const TextBookPage = () => {
   }, [audioList]);
   return (
     <Box className={backgroundGen(category)}>
-      <Container
-        className={
-          styles.paginationContainer +
-          ` ${correctWords === 20 ? styles.easy : ' '}`
-        }
-      >
+      <Container className={styles.paginationContainer}>
         <Select
           value={category}
           label="Category"
           onChange={(event) => {
             setCategory(Number(event.target.value));
-            navigate(`/textbook?group=${event.target.value}&page=${page}`);
+            if (event.target.value === 7) {
+              setPage(1);
+              navigate(`/textbook?group=${event.target.value}&page=1`);
+            } else {
+              navigate(`/textbook?group=${event.target.value}&page=${page}`);
+            }
           }}
         >
           <MenuItem value={1}>Уровень 1</MenuItem>
@@ -135,9 +137,15 @@ const TextBookPage = () => {
             onChange={(_, num) => setPage(num)}
             showFirstButton
             showLastButton
+            color="primary"
             sx={{ marginY: 3, marginX: 'auto' }}
             renderItem={(item) => (
               <PaginationItem
+                classes={{
+                  selected: ` ${
+                    correctWords + wrongWords === 20 ? styles.easy : ' '
+                  }`,
+                }}
                 component={NavLink}
                 to={`/textbook?group=${category}&page=${item.page}`}
                 {...item}
@@ -150,7 +158,7 @@ const TextBookPage = () => {
           className={styles.button}
           component={Link}
           to={`/audiochallenge?group=${category - 1}&page=${page - 1}`}
-          disabled={correctWords === 20 ? true : false}
+          disabled={wrongWords + correctWords === 20 ? true : false}
         >
           Аудиовызов
         </Button>
@@ -159,7 +167,7 @@ const TextBookPage = () => {
           className={styles.button}
           component={Link}
           to={`/sprint?group=${category - 1}&page=${page - 1}`}
-          disabled={correctWords === 20 ? true : false}
+          disabled={wrongWords + correctWords === 20 ? true : false}
         >
           Спринт
         </Button>
@@ -196,6 +204,8 @@ const TextBookPage = () => {
               setAduioList={setAudioList}
               allWords={words}
               setAllWords={setWords}
+              wrongWords={wrongWords}
+              setWrongWords={setWrongWords}
             />
           </Container>
         ))}

@@ -45,5 +45,7 @@ export interface CardParam {
   stateSetCorrect: React.Dispatch<React.SetStateAction<number>>;
   setAduioList: React.Dispatch<React.SetStateAction<string[]>>;
   allWords: word[];
+  wrongWords: number;
+  setWrongWords: React.Dispatch<React.SetStateAction<number>>;
   setAllWords: React.Dispatch<React.SetStateAction<word[]>>;
 }
