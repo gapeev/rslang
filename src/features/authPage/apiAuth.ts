@@ -1,7 +1,7 @@
 import { IUserSignUp, IUserSignIn, JWTToken } from './../../common/Interfaces';
 import axios from 'axios';
+import { baseUrl } from '../../common/axios';
 
-export const baseUrl = 'https://learnwords-team31.herokuapp.com';
 const usersURL = `${baseUrl}/users`;
 const signinUrl = `${baseUrl}/signin`;
 
