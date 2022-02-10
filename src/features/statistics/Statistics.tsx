@@ -2,12 +2,14 @@ import { Container } from '@mui/material';
 import { useState, useEffect } from 'react';
 import CounChangeDay from './longStat/CounChangeDay';
 import CountCorrectDay from './longStat/CountDay';
+import ShortStatGames from './shortStat/ShortStatGames';
 import { loadStat } from './request/loadStat';
 import styles from './Statistics.module.css';
 const StatisticsPage = () => {
   const allGraph = () => {
     return (
       <>
+        <ShortStatGames data={dataStat} />
         <CounChangeDay data={dataStat} />
         <CountCorrectDay data={dataStat} />
       </>
