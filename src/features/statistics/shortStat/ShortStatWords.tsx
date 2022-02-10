@@ -18,7 +18,7 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-const ShortStatGames = (props: dataStat) => {
+export const ShortStatWords = (props: dataStat) => {
   const mainObject = props.data?.optional?.gameStatistics as gameStatistics;
   const audioGame = mainObject?.audiochallenge;
   const sprintGame = mainObject?.sprint;
@@ -58,10 +58,9 @@ const ShortStatGames = (props: dataStat) => {
       {
         label: 'Самая длинная серия правильных ответов',
         data: [audioGame?.longestSeries, sprintGame?.longestSeries],
-        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+        backgroundColor: 'rgba(75, 192, 192, 0.5)',
       },
     ],
   };
   return <Bar options={options} data={data} />;
 };
-export default ShortStatGames;

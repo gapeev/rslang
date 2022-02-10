@@ -2,17 +2,19 @@ import { Container } from '@mui/material';
 import { useState, useEffect } from 'react';
 import CounChangeDay from './longStat/CounChangeDay';
 import CountCorrectDay from './longStat/CountDay';
-import ShortStatGames from './shortStat/ShortStatGames';
+import { ShortStatGame } from './shortStat/ShortStatGame';
 import { loadStat } from './request/loadStat';
 import styles from './Statistics.module.css';
+import { ShortStatWords } from './shortStat/ShortStatWords';
 const StatisticsPage = () => {
   const allGraph = () => {
     return (
-      <>
-        <ShortStatGames data={dataStat} />
+      <Container>
+        <ShortStatGame data={dataStat} />
+        <ShortStatWords data={dataStat} />
         <CounChangeDay data={dataStat} />
         <CountCorrectDay data={dataStat} />
-      </>
+      </Container>
     );
   };
   const AUTH =

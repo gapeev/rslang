@@ -20,7 +20,7 @@ ChartJS.register(
   Legend
 );
 const CounChangeDay = (props: dataStat) => {
-  const mainObject = props.data?.optional?.wordStatistics || {};
+  const mainObject = props.data?.optional?.newWordStatistics || {};
   const options = {
     responsive: true,
     plugins: {
@@ -39,9 +39,7 @@ const CounChangeDay = (props: dataStat) => {
     datasets: [
       {
         label: 'Количество слов',
-        data: Object.values(mainObject).map((el, ind, arr) =>
-          ind === 0 ? el : Number(el) - Number(arr[ind - 1])
-        ),
+        data: Object.values(mainObject),
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
       },
     ],

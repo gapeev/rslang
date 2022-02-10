@@ -5,6 +5,9 @@ export interface dataStat {
         date?: string;
       };
       gameStatistics: gameStatistics;
+      newWordStatistics: {
+        date?: string;
+      };
     };
   };
 }
