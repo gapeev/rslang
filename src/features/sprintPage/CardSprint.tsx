@@ -1,18 +1,26 @@
 import { Box, Paper, Typography, Grid, Button } from '@mui/material';
+import { fail } from 'assert';
+import { MouseEventHandler, SyntheticEvent } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
-import { getWordsSprint } from './apiSprint';
+import { getWordsSprint } from './sprintApi';
 
 interface PropsCardSprint {
-  result?: boolean;
-  onClick?: (res: boolean) => void;
+  onClickHandler: (
+    result: boolean
+  ) => MouseEventHandler<HTMLButtonElement> | undefined;
+  word: string;
+  translate: string;
 }
 
-export const CardSprint: React.FC<PropsCardSprint> = ({ result, onClick }) => {
-  const handleClick = (result: boolean) => () => {
-    console.log(result);
-  };
-  useHotkeys('left', handleClick(false), [onClick]);
-  useHotkeys('right', handleClick(true), [onClick]);
+export const CardSprint: React.FC<PropsCardSprint> = ({
+  onClickHandler,
+  word,
+  translate,
+}) => {
+  /* 
+
+  useHotkeys('left', onClickHandler(false), [onClickHandler]);
+  useHotkeys('right', onClickHandler(true), [onClickHandler]); */
   return (
     <Box
       sx={{
@@ -33,8 +41,8 @@ export const CardSprint: React.FC<PropsCardSprint> = ({ result, onClick }) => {
           display: 'flex',
         }}
       >
-        <Typography>Cat</Typography>
-        <Typography>Кот</Typography>?
+        <Typography>{word}</Typography>
+        <Typography>{translate}</Typography>?
       </Paper>
       <Grid
         container
@@ -42,8 +50,8 @@ export const CardSprint: React.FC<PropsCardSprint> = ({ result, onClick }) => {
           justifyContent: 'space-around',
         }}
       >
-        <Button onClick={handleClick(true)}>Yes</Button>
-        <Button>No</Button>
+        <Button onClick={onClickHandler(true)}>Yes</Button>
+        <Button onClick={onClickHandler(false)}>No</Button>
       </Grid>
     </Box>
   );

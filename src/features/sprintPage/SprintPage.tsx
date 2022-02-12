@@ -2,30 +2,41 @@ import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
 import sprint from '../../assets/sprint.jpg';
 import { ArrayDifficult } from '../../common/Enums';
-import { getWordsSprint } from './apiSprint';
+import getWords, { creatorPair, shuffle } from './creatorPair';
 import { GameSprint } from './GameSprint';
 import { WelcomeSprint } from './welcomeSprint';
+import { getWordsSprint } from './sprintApi';
+import { Preloader } from '../../common/preloader';
+import { setGroupGame, setPairOfGame } from './sprintSlice';
+import { useDispatch } from 'react-redux';
 
 export const SpringPage: React.FC = () => {
   const [group, setGroup] = useState<number>(0);
   const [isReady, setIsReady] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(false);
-  const [wrongAnswers, setWrongAnswers] = useState<String[]>([]);
+  const [answers, setAnswers] = useState<String[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const dispatch = useDispatch();
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const val = (event.target as HTMLInputElement).value;
     setGroup(ArrayDifficult.indexOf(val));
+    dispatch(setGroupGame(ArrayDifficult.indexOf(val)));
     setIsReady(true);
   };
 
   const handleOnStartGame = async () => {
     setStart(true);
-    getWordsSprint(group.toString()).then((res) => {
-      setWrongAnswers(res.map((item) => item.word));
-    });
+    setIsLoading(true);
+    getWords(group, dispatch);
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
   };
   useEffect(() => {
-    console.log(wrongAnswers);
-  }, [wrongAnswers]);
+    console.log(answers);
+  }, [answers]);
   return (
     <Box
       sx={{
@@ -48,6 +59,7 @@ export const SpringPage: React.FC = () => {
           handleOnStartGame={handleOnStartGame}
         />
       )}
+      <Preloader status={isLoading} />
     </Box>
   );
 };

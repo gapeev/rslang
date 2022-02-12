@@ -17,6 +17,7 @@ export const Timer: React.FC = () => {
           if (prevTime === 1) {
             setStart(false);
             clearInterval(interval);
+            setSec(60);
           }
 
           return prevTime - 1;

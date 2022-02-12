@@ -1,4 +1,4 @@
-import { IWord } from './../../common/Interfaces';
+import { IWord } from '../../common/Interfaces';
 import { instanceAxios } from '../../common/axios';
 import { MAX_PAGES } from '../../common/Enums';
 
