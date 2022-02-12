@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { RootState } from '../../app/store';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { startGame, User } from './audiochallengeSlice';
+import { statInit } from '../stat/statSlice';
 import styles from './Welcome.module.css';
 import { Box, Button, ButtonGroup, Typography } from '@mui/material';
 import { GROUPS_COUNT_IN_GAME, NO_PAGE } from './constants';
@@ -18,11 +19,18 @@ export default function Welcome() {
   const pageParam = searchParams.get('page');
   const hasGroupPage = groupParam !== null && pageParam !== null;
 
-  const user: User = {
-    id: userId,
-    token,
-    isAuth: userId !== '',
-  };
+  const user: User = useMemo(
+    () => ({
+      id: userId,
+      token,
+      isAuth: userId !== '',
+    }),
+    [userId, token]
+  );
+
+  useEffect(() => {
+    dispatch(statInit({ user }));
+  }, [dispatch, user]);
 
   return (
     <Box

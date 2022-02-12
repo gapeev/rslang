@@ -27,6 +27,7 @@ export interface Word {
     difficulty: Difficulty;
     optional: Optional;
   };
+  isNew: boolean;
 }
 
 export interface UserWord {

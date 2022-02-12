@@ -62,6 +62,11 @@ export async function fetchWords(
         };
       }
 
+      const { rightCount, wrongCount, rightRow } = userWord.optional;
+      if (rightCount === 0 && wrongCount === 0 && rightRow === 0) {
+        word.isNew = true;
+      }
+
       return { ...word, ...userWord, id: word.id };
     });
 
@@ -119,13 +124,26 @@ export async function fetchHardWords(
     );
     if (rawResponse.ok) {
       const data: AggregationResponse[] = await rawResponse.json();
-      return data[0].paginatedResults.map((word) => ({
-        ...word,
-        id: word._id,
-        wordId: word._id,
-        difficulty: word.userWord.difficulty,
-        optional: word.userWord.optional,
-      }));
+      return data[0].paginatedResults.map((word) => {
+        const hardWord = {
+          ...word,
+          id: word._id,
+          wordId: word._id,
+          difficulty: word.userWord.difficulty,
+          optional: word.userWord.optional || {
+            rightCount: 0,
+            wrongCount: 0,
+            rightRow: 0,
+          },
+        };
+
+        const { rightCount, wrongCount, rightRow } = hardWord.optional;
+        if (rightCount === 0 && wrongCount === 0 && rightRow === 0) {
+          hardWord.isNew = true;
+        }
+
+        return hardWord;
+      });
     } else {
       throw new Error('Something went wrong');
     }

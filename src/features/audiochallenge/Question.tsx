@@ -10,12 +10,30 @@ import { Box, Button, ButtonGroup, IconButton } from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import Progress from './Progress';
 import { BASE_URL, NO_INDEX } from './constants';
+import { statWord, StatWordPayload } from '../stat/statSlice';
 
 export default function Question() {
   const dispatch = useAppDispatch();
   const { words, wordSets, currentWordIndex } = useAppSelector(
     selectAudiochallengeState
   );
+
+  const {
+    isNew: currentIsNew,
+    difficulty: currentDifficulty,
+    optional: { rightRow: currentRightRow },
+  } = words[currentWordIndex];
+
+  const statWordData: Omit<StatWordPayload, 'isRight'> = useMemo(
+    () => ({
+      game: 'audiochallenge',
+      isNew: currentIsNew,
+      rightRow: currentRightRow,
+      isEasy: currentDifficulty === 'easy',
+    }),
+    [currentIsNew, currentRightRow, currentDifficulty]
+  );
+
   const {
     token: { token, userId },
   } = useAppSelector((state: RootState) => state.user);
@@ -40,6 +58,7 @@ export default function Question() {
           break;
         case 'Enter':
           dispatch(setAnswer({ index: NO_INDEX, isRight: false, user }));
+          dispatch(statWord({ ...statWordData, isRight: false }));
           break;
         case 'Digit1':
         case 'Digit2':
@@ -49,10 +68,11 @@ export default function Question() {
           const index = Number(code.slice(-1)) - 1;
           const isRight = wordSets[currentWordIndex][index].isRight;
           dispatch(setAnswer({ index, isRight, user }));
+          dispatch(statWord({ ...statWordData, isRight }));
           break;
       }
     },
-    [currentWordIndex, dispatch, wordSets, user]
+    [currentWordIndex, dispatch, wordSets, user, statWordData]
   );
 
   useEffect(() => {
@@ -106,7 +126,10 @@ export default function Question() {
             <Button
               key={id}
               startIcon={index + 1}
-              onClick={() => dispatch(setAnswer({ index, isRight, user }))}
+              onClick={() => {
+                dispatch(setAnswer({ index, isRight, user }));
+                dispatch(statWord({ ...statWordData, isRight }));
+              }}
             >
               {wordTranslate}
             </Button>
@@ -115,9 +138,10 @@ export default function Question() {
       </ButtonGroup>
       <Button
         variant="contained"
-        onClick={() =>
-          dispatch(setAnswer({ index: NO_INDEX, isRight: false, user }))
-        }
+        onClick={() => {
+          dispatch(setAnswer({ index: NO_INDEX, isRight: false, user }));
+          dispatch(statWord({ ...statWordData, isRight: false }));
+        }}
       >
         Не знаю
       </Button>
