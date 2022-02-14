@@ -9,10 +9,10 @@ import {
   Button,
 } from '@mui/material';
 import { ArrayDifficult } from '../../common/Enums';
-import classes from './SpringPage.module.css';
+import classes from './SprintPage.module.css';
 
 const DESCRIBE_GAME =
-  'Спринт - тренировка на скорость. Попробуй угадать как можно больше слов за 30 секунд.';
+  'Спринт - тренировка на скорость. Попробуй угадать как можно больше слов за минуту.';
 const TITLE_GAME = 'SPRINT';
 const CHOOSE_DIFFICULT = 'Выбери сложность игры';
 
@@ -30,13 +30,37 @@ export const WelcomeSprint: React.FC<propsWelcome> = ({
   return (
     <Box className={classes.start_screen}>
       <Box className={classes.block_title}>
-        <Typography component="h3">{TITLE_GAME}</Typography>
-        <Typography component="h4">{DESCRIBE_GAME}</Typography>
+        <Typography
+          sx={{
+            color: '#ffd600',
+            fontSize: '3.5rem',
+            fontFamily: 'Gilroy-Heavy',
+          }}
+        >
+          {TITLE_GAME}
+        </Typography>
+        <Typography
+          sx={{
+            color: 'white',
+            fontSize: '1.5rem',
+            fontFamily: 'Gilroy-Heavy',
+          }}
+        >
+          {DESCRIBE_GAME}
+        </Typography>
       </Box>
       <Box className={classes.block_control}>
         <FormControl>
           <FormLabel id="demo-radio-buttons-group-label">
-            <Typography component="h5">{CHOOSE_DIFFICULT}</Typography>
+            <Typography
+              sx={{
+                color: 'white',
+                fontSize: '1.5rem',
+                fontFamily: 'Gilroy-Heavy',
+              }}
+            >
+              {CHOOSE_DIFFICULT}
+            </Typography>
           </FormLabel>
           <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"

@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import './timer.css';
 import AvTimerTwoToneIcon from '@mui/icons-material/AvTimerTwoTone';
+import { ModalResults } from './modalResults';
+import { Button } from '@mui/material';
 
 export const Timer: React.FC = () => {
-  const [sec, setSec] = useState(60);
+  const [sec, setSec] = useState(30);
   const [isStart, setStart] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
 
   const onRestart = (interval: NodeJS.Timeout) => {
     clearInterval(interval);
@@ -16,8 +19,8 @@ export const Timer: React.FC = () => {
         setSec((prevTime) => {
           if (prevTime === 1) {
             setStart(false);
-            clearInterval(interval);
-            setSec(60);
+            onRestart(interval);
+            setOpenModal(true);
           }
 
           return prevTime - 1;
@@ -36,6 +39,8 @@ export const Timer: React.FC = () => {
           {`${Number(sec) < 10 ? `0${sec}` : sec}`}
         </div>
       </div>
+
+      <ModalResults open={openModal} />
     </div>
   );
 };

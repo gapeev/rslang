@@ -37,3 +37,39 @@ export interface IWord {
   textMeaningTranslate: string;
   textExampleTranslate: string;
 }
+
+export interface GameStatistics {
+  audiochallenge: {
+    lastChanged: string;
+    learnedWords: number;
+    correctAnswers: number;
+    wrongAnswers: number;
+    longestSeries: number;
+    currentSeries: number;
+    answersCount: number;
+    newWords: number;
+  };
+  sprint: {
+    lastChanged: string;
+    learnedWords: number;
+    correctAnswers: number;
+    wrongAnswers: number;
+    longestSeries: number;
+    currentSeries: number;
+    answersCount: number;
+    newWords: number;
+  };
+}
+
+export type SprintStat = Pick<GameStatistics, 'sprint'>;
+
+export interface ISprintStat {
+  lastChanged: string;
+  learnedWords: number;
+  correctAnswers: number;
+  wrongAnswers: number;
+  longestSeries: number;
+  currentSeries: number;
+  answersCount: number;
+  newWords: number;
+}

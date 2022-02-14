@@ -7,13 +7,14 @@ import { GameSprint } from './GameSprint';
 import { WelcomeSprint } from './welcomeSprint';
 import { getWordsSprint } from './sprintApi';
 import { Preloader } from '../../common/preloader';
-import { setGroupGame, setPairOfGame } from './sprintSlice';
-import { useDispatch } from 'react-redux';
+import { setGroupGame, setPairOfGame, setStartGame } from './sprintSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
 
 export const SpringPage: React.FC = () => {
   const [group, setGroup] = useState<number>(0);
   const [isReady, setIsReady] = useState<boolean>(false);
-  const [start, setStart] = useState<boolean>(false);
+  const isStart = useSelector((store: RootState) => store.sprint.isStart);
   const [answers, setAnswers] = useState<String[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
@@ -26,17 +27,15 @@ export const SpringPage: React.FC = () => {
   };
 
   const handleOnStartGame = async () => {
-    setStart(true);
+    dispatch(setStartGame(true));
     setIsLoading(true);
     getWords(group, dispatch);
 
     setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 1000);
   };
-  useEffect(() => {
-    console.log(answers);
-  }, [answers]);
+
   return (
     <Box
       sx={{
@@ -45,12 +44,9 @@ export const SpringPage: React.FC = () => {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundImage: `url(${sprint})`,
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
       }}
     >
-      {start ? (
+      {isStart ? (
         <GameSprint />
       ) : (
         <WelcomeSprint
