@@ -32,6 +32,11 @@ const CounChangeDay = (props: dataStat) => {
         text: 'Количество новых слов за каждый день изучения',
       },
     },
+    scales: {
+      x: {
+        offset: true,
+      },
+    },
   };
   const labels = Object.keys(mainObject);
   const data = {
