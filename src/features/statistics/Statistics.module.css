@@ -5,9 +5,3 @@
   padding: 15px;
   margin-bottom: 10px;
 }
-.shortContainers {
-  display: flex !important;
-}
-.shortContainer {
-  width: 50% !important;
-}
