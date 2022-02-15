@@ -43,16 +43,13 @@ export const sprintSlice = createSlice({
       return { ...state, isStart: action.payload };
     },
     setGameAgain(state) {
+      state.words = [];
+      state.isStart = false;
       state.stat.correctAnswers = 0;
       state.stat.wrongAnswers = 0;
       state.stat.currentSeries = 0;
       state.stat.answersCount = 0;
       state.stat.newWords = 0;
-      return {
-        ...state,
-        words: initialState.words,
-        isStart: initialState.isStart,
-      };
     },
     incrAnswersCount(state) {
       state.stat.answersCount = state.stat.answersCount + 1;

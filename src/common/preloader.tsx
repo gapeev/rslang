@@ -6,5 +6,5 @@ type Props = {
   status: boolean;
 };
 export const Preloader: React.FC<Props> = ({ status }) => {
-  return <Box sx={{ width: '98%' }}>{status ? <LinearProgress /> : ''}</Box>;
+  return <Box sx={{ width: '100%' }}>{status ? <LinearProgress /> : ''}</Box>;
 };

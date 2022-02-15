@@ -28,7 +28,12 @@ export const WelcomeSprint: React.FC<propsWelcome> = ({
   handleOnStartGame,
 }) => {
   return (
-    <Box className={classes.start_screen}>
+    <Box
+      sx={{
+        minHeight: '79vh',
+      }}
+      className={classes.start_screen}
+    >
       <Box className={classes.block_title}>
         <Typography
           sx={{
@@ -63,6 +68,7 @@ export const WelcomeSprint: React.FC<propsWelcome> = ({
             </Typography>
           </FormLabel>
           <RadioGroup
+            row
             aria-labelledby="demo-radio-buttons-group-label"
             defaultValue="female"
             name="radio-buttons-group"

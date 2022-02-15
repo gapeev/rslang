@@ -1,11 +1,9 @@
 import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
-import sprint from '../../assets/sprint.jpg';
 import { ArrayDifficult } from '../../common/Enums';
 import getWords, { creatorPair, shuffle } from './creatorPair';
 import { GameSprint } from './GameSprint';
 import { WelcomeSprint } from './welcomeSprint';
-import { getWordsSprint } from './sprintApi';
 import { Preloader } from '../../common/preloader';
 import { setGroupGame, setPairOfGame, setStartGame } from './sprintSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,7 +14,6 @@ export const SpringPage: React.FC = () => {
   const [isReady, setIsReady] = useState<boolean>(false);
   const isStart = useSelector((store: RootState) => store.sprint.isStart);
   const [answers, setAnswers] = useState<String[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,22 +25,13 @@ export const SpringPage: React.FC = () => {
 
   const handleOnStartGame = async () => {
     dispatch(setStartGame(true));
-    setIsLoading(true);
     getWords(group, dispatch);
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
   };
 
   return (
     <Box
       sx={{
         minHeight: '89vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
       }}
     >
       {isStart ? (
@@ -55,7 +43,6 @@ export const SpringPage: React.FC = () => {
           handleOnStartGame={handleOnStartGame}
         />
       )}
-      <Preloader status={isLoading} />
     </Box>
   );
 };

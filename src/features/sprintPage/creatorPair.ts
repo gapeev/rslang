@@ -37,6 +37,22 @@ export default async function getWords(
   });
 }
 
+export function calculatePoints(currPoints: number, factor: number) {
+  const startPoints = 10;
+  const points = startPoints * factor + currPoints;
+  return points;
+}
+export function calculateEffect(
+  correctANswers: number,
+  answersCount: number
+): number {
+  const out = Math.round((correctANswers / answersCount) * 100);
+  if (isNaN(out)) {
+    return 0;
+  }
+  return out;
+}
+
 export function shuffle<T>(array: T[]): T[] {
   const shallowCopy = [...array];
   for (let i = shallowCopy.length - 1; i > 0; i -= 1) {

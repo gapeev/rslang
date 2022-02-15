@@ -1,11 +1,17 @@
 import { Box, Typography } from '@mui/material';
 import { ISprintStat } from '../../common/Interfaces';
+import { calculateEffect } from './creatorPair';
+import styles from './SprintPage.module.css';
 
 type PropsCounter = {
   stat: ISprintStat;
+  points: number;
 };
 
-export const CounterPanelSprint: React.FC<PropsCounter> = ({ stat }) => {
+export const CounterPanelSprint: React.FC<PropsCounter> = ({
+  stat,
+  points,
+}) => {
   return (
     <Box>
       <Typography
@@ -25,7 +31,7 @@ export const CounterPanelSprint: React.FC<PropsCounter> = ({ stat }) => {
         }}
       >
         Количество правильных ответов : {stat.correctAnswers}
-      </Typography>{' '}
+      </Typography>
       <Typography
         sx={{
           color: '#ffd600',
@@ -33,9 +39,10 @@ export const CounterPanelSprint: React.FC<PropsCounter> = ({ stat }) => {
           fontFamily: 'Gilroy-Heavy',
         }}
       >
-        Твой кпд :{' '}
-        {`${Math.round((stat.correctAnswers / stat.answersCount) * 100)}%`}
+        Твой кпд :
+        {`${calculateEffect(stat.correctAnswers, stat.answersCount)}%`}
       </Typography>
+      <div className={styles.sprint__score}>{`Очки: ${points}`}</div>
     </Box>
   );
 };

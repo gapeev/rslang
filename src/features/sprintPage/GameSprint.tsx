@@ -1,4 +1,5 @@
 import { Box } from '@mui/material';
+import StarIcon from '@mui/icons-material/Star';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useEffect, useState } from 'react';
@@ -6,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import { CardSprint } from './CardSprint';
 import { CounterPanelSprint } from './CounterPanelSprint';
-import getWords from './creatorPair';
+import getWords, { calculatePoints } from './creatorPair';
 import {
   incrAnswersCount,
   incrCorrectAnswers,
@@ -17,7 +18,10 @@ import {
   setLongestSeries,
 } from './sprintSlice';
 import { Timer } from './Timer';
+import useSound from 'use-sound';
 import styles from './SprintPage.module.css';
+import sounds from '../../common/sounds';
+import { Preloader } from '../../common/preloader';
 
 export const GameSprint: React.FC = () => {
   const dispatch = useDispatch();
@@ -28,6 +32,16 @@ export const GameSprint: React.FC = () => {
   const statistics = useSelector((store: RootState) => store.sprint.stat);
   const [result, setResult] = useState<string>('');
   const [idx, setIdx] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  //Points
+  const [points, setPoints] = useState(0);
+  const [factor, setFactor] = useState(1);
+  const [counterTruth, setCounterTruth] = useState(0);
+
+  //Sounds
+  const [playCorrect] = useSound(sounds.correct);
+  const [playWrong] = useSound(sounds.wrong);
 
   const toggleIcon = (str: string) => {
     setResult(str);
@@ -36,13 +50,25 @@ export const GameSprint: React.FC = () => {
     }, 1000);
   };
 
-  const onClickHandler = (result: boolean) => () => {
-    console.log(result);
+  const onClickHandler = (result: boolean) => {
     if (result === words[idx].isTruth) {
+      playCorrect();
+
+      if (counterTruth > 2) {
+        setCounterTruth(0);
+        setFactor(factor + 1);
+      } else {
+        setCounterTruth(counterTruth + 1);
+      }
+      setPoints(calculatePoints(points, factor));
+
       dispatch(incrCorrectAnswers());
       dispatch(incrCurrentSeries());
       toggleIcon('true');
     } else {
+      playWrong();
+      setCounterTruth(0);
+
       dispatch(incrWrongAnswers());
       if (statistics.currentSeries > statistics.longestSeries) {
         dispatch(setLongestSeries(statistics.currentSeries));
@@ -53,6 +79,9 @@ export const GameSprint: React.FC = () => {
     dispatch(incrAnswersCount());
     setIdx(idx + 1);
   };
+  useEffect(() => {
+    console.log('points:', points, 'factor:', factor, 'points:', points);
+  }, [points, factor]);
 
   useEffect(() => {
     displayQuestion();
@@ -93,6 +122,21 @@ export const GameSprint: React.FC = () => {
       </Box>
     );
   };
+  const displayCounterPoints = () => {
+    return (
+      <Box>
+        <StarIcon
+          className={counterTruth < 1 ? styles.star : styles.star_active}
+        />
+        <StarIcon
+          className={counterTruth < 2 ? styles.star : styles.star_active}
+        />
+        <StarIcon
+          className={counterTruth < 3 ? styles.star : styles.star_active}
+        />
+      </Box>
+    );
+  };
 
   return (
     <Box
@@ -100,16 +144,18 @@ export const GameSprint: React.FC = () => {
         minHeight: '89vh',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'space-around',
         alignItems: 'center',
         background: '#2c387e',
         width: '100%',
       }}
     >
-      <Timer />
-      <CounterPanelSprint stat={statistics} />
+      {words.length > 0 ? <Timer /> : ''}
+      <CounterPanelSprint stat={statistics} points={points} />
+      {displayCounterPoints()}
       {displayQuestion()}
       {dispalayResults()}
+      {words.length === 0 ? <Preloader status={isLoading} /> : ''}
     </Box>
   );
 };

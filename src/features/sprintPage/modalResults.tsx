@@ -8,19 +8,20 @@ import {
   Slide,
   TextField,
 } from '@mui/material';
-import CircularProgress, {
-  CircularProgressProps,
-} from '@mui/material/CircularProgress';
-import { Animate } from 'react-move';
-import { easeQuadInOut } from 'd3-ease';
-import { useEffect, useState } from 'react';
 import { TransitionProps } from '@mui/material/transitions';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setGameAgain, setStartGame } from './sprintSlice';
+import { RootState } from '../../app/store';
+import { ISprintStat, SprintStat } from '../../common/Interfaces';
+import { calculateEffect } from './creatorPair';
 
 const TITLE_MODAL = 'Твой результат';
+const RESULT_BAD = 'Попробуй еще раз!';
+const RESULT_NOTBAD = 'Неплохой результат!';
+const RESULT_GOOD = 'Хороший результат!';
+const RESULT_PERFECT = 'Ты лучший!';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -38,15 +39,20 @@ type PropsModal = {
 export const ModalResults: React.FC<PropsModal> = ({ open }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const stat: ISprintStat = useSelector(
+    (store: RootState) => store.sprint.stat
+  );
+
   const handleClose = () => {
     console.log('close');
   };
-  /*   const handleClickOpen = () => {
-      setOpen(true)
+  const displayResultPhrase = () => {
+    const percent = calculateEffect(stat.correctAnswers, stat.answersCount);
+    if (percent <= 25) return RESULT_BAD;
+    else if (percent <= 50) return RESULT_NOTBAD;
+    else if (percent <= 75) return RESULT_GOOD;
+    else if (percent <= 100) return RESULT_PERFECT;
   };
-  const handleClickClose = () => {
-    setOpen(false)
-}; */
   return (
     <Dialog
       open={open}
@@ -54,10 +60,49 @@ export const ModalResults: React.FC<PropsModal> = ({ open }) => {
       TransitionComponent={Transition}
       aria-labelledby="modal-results"
     >
-      <DialogContent>
-        <DialogTitle id="modal-results">{TITLE_MODAL}</DialogTitle>
-        <DialogContentText>Слбаовато ! Попробуй еще раз!</DialogContentText>
-        <DialogContentText>Количество правильных ответов</DialogContentText>
+      <DialogContent
+        sx={{
+          background: '#e9e9e54',
+        }}
+      >
+        <DialogTitle
+          sx={{
+            color: 'white',
+            fontSize: '1.5rem',
+            fontFamily: 'Gilroy-Heavy',
+          }}
+        >
+          {displayResultPhrase()}
+        </DialogTitle>
+        <DialogContentText
+          sx={{
+            color: 'white',
+            fontSize: '1.5rem',
+            fontFamily: 'Gilroy-Heavy',
+          }}
+        >
+          Количество правильных ответов :{stat.correctAnswers}%
+        </DialogContentText>
+        <DialogContentText
+          sx={{
+            color: 'white',
+            fontSize: '1.5rem',
+            fontFamily: 'Gilroy-Heavy',
+          }}
+        >
+          Лучшая серия:
+          {stat.longestSeries}
+        </DialogContentText>
+        <DialogContentText
+          sx={{
+            color: 'white',
+            fontSize: '1.5rem',
+            fontFamily: 'Gilroy-Heavy',
+          }}
+        >
+          Твой прогресс:
+          {calculateEffect(stat.correctAnswers, stat.answersCount)}%
+        </DialogContentText>
       </DialogContent>
       {/* <Animate
        start={() => ({
@@ -74,7 +119,7 @@ export const ModalResults: React.FC<PropsModal> = ({ open }) => {
          {value}
     </Animate> */}
 
-      <DialogActions>
+      <DialogActions sx={{ display: 'flex', justifyContent: 'space-around' }}>
         <Button
           sx={{ color: '#ffd600', background: '#00bcd4' }}
           variant="contained"
