@@ -10,10 +10,22 @@ const StatisticsPage = () => {
   const allGraph = () => {
     return (
       <Container>
-        <ShortStatGame data={dataStat} />
-        <ShortStatWords data={dataStat} />
-        <CounChangeDay data={dataStat} />
-        <CountCorrectDay data={dataStat} />
+        <Container className={styles.shortContainers}>
+          <Container className={styles.shortContainer}>
+            <ShortStatGame data={dataStat} />
+          </Container>
+          <Container className={styles.shortContainer}>
+            <ShortStatWords data={dataStat} />
+          </Container>
+        </Container>
+        <Container className={styles.shortContainers}>
+          <Container className={styles.shortContainer}>
+            <CounChangeDay data={dataStat} />
+          </Container>
+          <Container className={styles.shortContainer}>
+            <CountCorrectDay data={dataStat} />
+          </Container>
+        </Container>
       </Container>
     );
   };

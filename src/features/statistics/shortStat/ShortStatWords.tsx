@@ -10,6 +10,7 @@ import {
 import { Bar } from 'react-chartjs-2';
 import { dataStat } from '../interfaces';
 import { gameStatistics } from '../interfaces';
+import styles from '../Statistics.module.css';
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -23,9 +24,9 @@ export const ShortStatWords = (props: dataStat) => {
   const audioGame = mainObject?.audiochallenge;
   const sprintGame = mainObject?.sprint;
   const audioCorrectAns =
-    (audioGame?.wrongAnswers / audioGame?.answersCount) * 100;
+    (audioGame?.correctAnswers / audioGame?.answersCount) * 100;
   const sprintCorrectAns =
-    (sprintGame?.wrongAnswers / sprintGame?.answersCount) * 100;
+    (sprintGame?.correctAnswers / sprintGame?.answersCount) * 100;
   const options = {
     responsive: true,
     plugins: {
@@ -62,5 +63,5 @@ export const ShortStatWords = (props: dataStat) => {
       },
     ],
   };
-  return <Bar options={options} data={data} />;
+  return <Bar options={options} data={data} className={styles.shortGraph} />;
 };

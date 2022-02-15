@@ -27,7 +27,7 @@ const CountDay = (props: dataStat) => {
       },
       title: {
         display: true,
-        text: 'Общее количество слов',
+        text: 'Общее количество изученных слов по дням',
       },
     },
   };

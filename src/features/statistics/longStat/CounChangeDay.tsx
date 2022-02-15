@@ -29,7 +29,7 @@ const CounChangeDay = (props: dataStat) => {
       },
       title: {
         display: true,
-        text: 'Количество за день',
+        text: 'Количество новых слов за каждый день изучения',
       },
     },
   };

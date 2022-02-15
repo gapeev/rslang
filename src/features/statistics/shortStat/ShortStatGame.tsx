@@ -10,6 +10,7 @@ import {
 import { Bar } from 'react-chartjs-2';
 import { dataStat } from '../interfaces';
 import { gameStatistics } from '../interfaces';
+import styles from '../Statistics.module.css';
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -28,6 +29,7 @@ export const ShortStatGame = (props: dataStat) => {
     100;
   const options = {
     responsive: true,
+    maintainAspectRatio: true,
     plugins: {
       legend: {
         position: 'bottom' as const,
@@ -38,7 +40,7 @@ export const ShortStatGame = (props: dataStat) => {
       },
     },
   };
-  const labels = [`Аудиовызов`];
+  const labels = [``];
   const data = {
     labels,
     datasets: [
@@ -59,5 +61,5 @@ export const ShortStatGame = (props: dataStat) => {
       },
     ],
   };
-  return <Bar options={options} data={data} />;
+  return <Bar options={options} data={data} className={styles.shortGraph} />;
 };
