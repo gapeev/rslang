@@ -14,6 +14,7 @@ export const Timer: React.FC = () => {
     (store: RootState) => store.sprint.words
   );
   const onRestart = (interval: NodeJS.Timeout) => {
+    console.log('reset');
     clearInterval(interval);
   };
 
@@ -25,6 +26,7 @@ export const Timer: React.FC = () => {
             setStart(false);
             onRestart(interval);
             setOpenModal(true);
+            //TODO send data to server
           }
 
           return prevTime - 1;

@@ -60,11 +60,7 @@ export const ModalResults: React.FC<PropsModal> = ({ open }) => {
       TransitionComponent={Transition}
       aria-labelledby="modal-results"
     >
-      <DialogContent
-        sx={{
-          background: '#e9e9e54',
-        }}
-      >
+      <DialogContent>
         <DialogTitle
           sx={{
             color: 'white',
@@ -81,7 +77,7 @@ export const ModalResults: React.FC<PropsModal> = ({ open }) => {
             fontFamily: 'Gilroy-Heavy',
           }}
         >
-          Количество правильных ответов :{stat.correctAnswers}%
+          Количество правильных ответов : {stat.correctAnswers}
         </DialogContentText>
         <DialogContentText
           sx={{
@@ -90,8 +86,7 @@ export const ModalResults: React.FC<PropsModal> = ({ open }) => {
             fontFamily: 'Gilroy-Heavy',
           }}
         >
-          Лучшая серия:
-          {stat.longestSeries}
+          Лучшая серия :{stat.longestSeries}
         </DialogContentText>
         <DialogContentText
           sx={{
@@ -100,7 +95,7 @@ export const ModalResults: React.FC<PropsModal> = ({ open }) => {
             fontFamily: 'Gilroy-Heavy',
           }}
         >
-          Твой прогресс:
+          Твой прогресс :
           {calculateEffect(stat.correctAnswers, stat.answersCount)}%
         </DialogContentText>
       </DialogContent>
