@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import {
   Link as NavLink,
   useLocation,
@@ -90,8 +90,9 @@ const TextBookPage = () => {
       })
     );
   }, [TOKEN, USERID, category, page]);
+  const audio = useMemo(() => new Audio(), []);
   useEffect(() => {
-    const audio = new Audio();
+    audio.pause();
     audio.src = audioList[0];
     audio.play();
     audio.onended = () => {
@@ -105,7 +106,7 @@ const TextBookPage = () => {
         };
       };
     };
-  }, [audioList]);
+  }, [audio, audioList]);
   return (
     <Box className={backgroundGen(category)}>
       <Container className={styles.paginationContainer}>
