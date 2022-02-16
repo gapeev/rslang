@@ -20,10 +20,11 @@ function TextBookCard(props: CardParam) {
     }
     return '';
   };
-
+  const rightRow = props.userWords[0]?.optional?.rightRow || 0;
+  const difficulty = props.userWords[0]?.difficulty || 'normal';
   const WORDID = props.id || props._id;
   const [color, setColor] = useState(defaultColor);
-
+  console.log(props.userWords[0]);
   return (
     <Card key={props.id} className={`${styles.card} ${color}`}>
       <Container className={styles.cardContent}>
@@ -78,6 +79,9 @@ function TextBookCard(props: CardParam) {
               props.TOKEN ? styles.buttonControlContainer : styles.hideContainer
             }
           >
+            <Typography style={{ margin: '0 auto' }}>
+              {difficulty !== 'easy' ? `Прогресс: ${rightRow} / 3` : ''}
+            </Typography>
             <Button
               variant="contained"
               color="success"
