@@ -34,8 +34,8 @@ export default function Welcome() {
 
   return (
     <Box
+      maxWidth="lg"
       sx={{
-        maxWidth: '700px',
         margin: 'auto',
         color: '#fff',
       }}
@@ -43,7 +43,7 @@ export default function Welcome() {
       <Typography variant="h2" align="center" gutterBottom component="div">
         Аудиовызов
       </Typography>
-      <Typography variant="h5" align="center" gutterBottom component="div">
+      <Typography variant="h4" align="center" gutterBottom component="div">
         Эта тренировка улучшает восприятие речи на слух
       </Typography>
       <ul className={styles.featuresList}>
@@ -55,6 +55,7 @@ export default function Welcome() {
       <Box sx={{ textAlign: 'center' }}>
         {hasGroupPage ? (
           <Button
+            size="large"
             variant="contained"
             onClick={() => {
               dispatch(
@@ -76,6 +77,7 @@ export default function Welcome() {
             {[...Array(GROUPS_COUNT_IN_GAME)].map((_, index) => (
               <Button
                 key={index}
+                size="large"
                 onClick={() => {
                   dispatch(startGame({ group: index, page: NO_PAGE, user }));
                 }}

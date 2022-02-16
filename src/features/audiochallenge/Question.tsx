@@ -83,8 +83,8 @@ export default function Question() {
 
   return (
     <Box
+      maxWidth="lg"
       sx={{
-        maxWidth: '700px',
         margin: 'auto',
         color: '#fff',
         display: 'flex',
@@ -103,6 +103,8 @@ export default function Question() {
           background: 'rgba(0, 74, 144, 0.29)',
           width: '170px',
           height: '170px',
+          mt: '40px',
+          mb: '40px',
           '&:hover': {
             background: 'rgba(0, 74, 144, 0.49)',
           },
@@ -117,7 +119,7 @@ export default function Question() {
         sx={{
           flexWrap: 'wrap',
           justifyContent: 'center',
-          gap: '10px',
+          gap: '20px',
           boxShadow: 'none',
         }}
       >
@@ -125,6 +127,7 @@ export default function Question() {
           ({ id, wordTranslate, isRight }, index) => (
             <Button
               key={id}
+              size="large"
               startIcon={index + 1}
               onClick={() => {
                 dispatch(setAnswer({ index, isRight, user }));
@@ -137,6 +140,7 @@ export default function Question() {
         )}
       </ButtonGroup>
       <Button
+        size="large"
         variant="contained"
         onClick={() => {
           dispatch(setAnswer({ index: NO_INDEX, isRight: false, user }));
