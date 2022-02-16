@@ -7,6 +7,7 @@ import {
   ButtonGroup,
   IconButton,
   Typography,
+  Zoom,
 } from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import Progress from './Progress';
@@ -41,8 +42,8 @@ export default function Answer() {
 
   return (
     <Box
+      maxWidth="lg"
       sx={{
-        maxWidth: '700px',
         margin: 'auto',
         color: '#fff',
         display: 'flex',
@@ -52,49 +53,51 @@ export default function Answer() {
       }}
     >
       <Progress />
-      <Box sx={{ height: '170px', position: 'relative' }}>
-        <Box
-          component="img"
-          src={`${BASE_URL}${words[currentWordIndex].image}`}
-          alt={words[currentWordIndex].wordTranslate}
-          sx={{ height: '100%' }}
-        />
-        <Box
-          sx={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'rgba(0, 0, 0, 0.5)',
-            padding: '12px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            height: 30,
-          }}
-        >
-          <Typography variant="h5">{words[currentWordIndex].word}</Typography>
-
-          <audio
-            ref={audioRef}
-            src={`${BASE_URL}${words[currentWordIndex].audio}`}
-          ></audio>
-          <IconButton
-            size="large"
-            sx={{ color: '#fff' }}
-            onClick={() => audioRef.current?.play()}
+      <Zoom in={true} style={{ transitionDelay: '100ms' }}>
+        <Box sx={{ height: '250px', position: 'relative' }}>
+          <Box
+            component="img"
+            src={`${BASE_URL}${words[currentWordIndex].image}`}
+            alt={words[currentWordIndex].wordTranslate}
+            sx={{ height: '100%' }}
+          />
+          <Box
+            sx={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'rgba(0, 0, 0, 0.5)',
+              padding: '12px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              height: 30,
+            }}
           >
-            <VolumeUpIcon />
-          </IconButton>
+            <Typography variant="h5">{words[currentWordIndex].word}</Typography>
+
+            <audio
+              ref={audioRef}
+              src={`${BASE_URL}${words[currentWordIndex].audio}`}
+            ></audio>
+            <IconButton
+              size="large"
+              sx={{ color: '#fff' }}
+              onClick={() => audioRef.current?.play()}
+            >
+              <VolumeUpIcon />
+            </IconButton>
+          </Box>
         </Box>
-      </Box>
+      </Zoom>
       <ButtonGroup
         variant="contained"
         aria-label="outlined primary button group"
         sx={{
           flexWrap: 'wrap',
           justifyContent: 'center',
-          gap: '10px',
+          gap: '20px',
           boxShadow: 'none',
         }}
       >
@@ -107,14 +110,23 @@ export default function Answer() {
               status = 'warning';
             }
             return (
-              <Button key={id} startIcon={index + 1} color={status}>
+              <Button
+                key={id}
+                size="large"
+                startIcon={index + 1}
+                color={status}
+              >
                 {wordTranslate}
               </Button>
             );
           }
         )}
       </ButtonGroup>
-      <Button variant="contained" onClick={() => dispatch(nextQuestion())}>
+      <Button
+        size="large"
+        variant="contained"
+        onClick={() => dispatch(nextQuestion())}
+      >
         Дальше
       </Button>
     </Box>
