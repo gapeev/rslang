@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import './App.css';
 import { Footer } from './features/footer/footer';
 import { Header } from './features/header/header';
-import book from './assets/book.jpg';
+import blur from './assets/blur.jpg';
 import { useRoutes } from './common/Router';
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
           minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',
-          backgroundImage: `url(${book})`,
+          backgroundImage: `url(${blur})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}

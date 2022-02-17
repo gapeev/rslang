@@ -7,11 +7,7 @@ import { getToken, setUser } from './authSlice';
 import { useNavigate } from 'react-router-dom';
 
 export const FormLogin: React.FC = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const { register, handleSubmit } = useForm({
     defaultValues: {
       email: 'greg@gmail.com',
       password: '11111111',
