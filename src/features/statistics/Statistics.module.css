@@ -5,3 +5,10 @@
   padding: 15px;
   margin-bottom: 10px;
 }
+.notAuthText {
+  margin: 0 auto;
+  font-size: large;
+}
+.authImg {
+  width: 100%;
+}
