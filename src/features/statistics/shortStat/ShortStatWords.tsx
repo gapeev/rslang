@@ -8,6 +8,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { getCurrentDateForStatistics } from '../../stat/utils';
 import { dataStat } from '../interfaces';
 import { gameStatistics } from '../interfaces';
 import styles from '../Statistics.module.css';
@@ -23,7 +24,7 @@ export const ShortStatWords = (props: dataStat) => {
   const mainObject = props.data?.optional?.gameStatistics as gameStatistics;
   const audioGame = mainObject?.audiochallenge;
   const sprintGame = mainObject?.sprint;
-  const dateNow = new Date().toLocaleDateString();
+  const dateNow = getCurrentDateForStatistics();
   let audioCorrectAns = 0;
   let sprintCorrectAns = 0;
   let audioNewWords = 0;

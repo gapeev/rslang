@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getCurrentDateForStatistics } from '../../stat/utils';
 const updateStat = (
   direction: string,
   TOKEN: string,
@@ -9,7 +10,8 @@ const updateStat = (
     headers: { Authorization: `Bearer ${TOKEN}` },
   };
   const statUrl = URL + `users/${UserID}/statistics`;
-  const dateNow = new Date().toLocaleDateString();
+  const dateNow = getCurrentDateForStatistics();
+
   axios
     .get(statUrl, config)
     .then((data) => {
