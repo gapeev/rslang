@@ -25,7 +25,6 @@ const updateStat = (
         res.optional.wordStatistics[dateNow] = lastValue - 1;
       }
       delete res.id;
-      console.log(res);
       axios.put(statUrl, res, config);
     })
     // Если нету создается
