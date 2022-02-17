@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { CardParam } from './interfaces';
 import changeDificulty from './core/changeDificulty';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import updateStat from './core/updateStat';
 function TextBookCard(props: CardParam) {
   const defaultColor = () => {
     if (props.userWords[0]) {
@@ -103,6 +104,7 @@ function TextBookCard(props: CardParam) {
                       props.allWords.filter((el) => el.id !== WORDID)
                     );
                   }
+                  updateStat('minus', props.TOKEN, props.USERID, props.url);
                   props.stateSetCorrect(props.stateCorrect - 1);
                 } else {
                   setColor(styles.easy);
@@ -126,6 +128,7 @@ function TextBookCard(props: CardParam) {
                   if (color === '') {
                     props.stateSetCorrect(props.stateCorrect + 1);
                   }
+                  updateStat('plus', props.TOKEN, props.USERID, props.url);
                 }
               }}
             >
@@ -137,7 +140,7 @@ function TextBookCard(props: CardParam) {
               className={styles.buttonControl}
               onClick={() => {
                 if (color === styles.hard) {
-                  setColor('');
+                  setColor('normal');
                   changeDificulty(
                     props.url,
                     'normal',
@@ -153,6 +156,9 @@ function TextBookCard(props: CardParam) {
                   }
                   props.setWrongWords(props.wrongWords - 1);
                 } else {
+                  if (color === styles.easy) {
+                    updateStat('minus', props.TOKEN, props.USERID, props.url);
+                  }
                   setColor(styles.hard);
                   changeDificulty(
                     props.url,
