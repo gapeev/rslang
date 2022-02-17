@@ -16,6 +16,7 @@ import { setGameAgain } from './sprintSlice';
 import { RootState } from '../../app/store';
 import { ISprintStat } from '../../common/Interfaces';
 import { calculateEffect } from './creatorPair';
+import { EnumRoutes } from '../../common/Enums';
 
 const RESULT_BAD = 'Попробуй еще раз!';
 const RESULT_NOTBAD = 'Неплохой результат!';
@@ -116,7 +117,7 @@ export const ModalResults: React.FC<PropsModal> = ({ open }) => {
             sx={{ color: 'white', background: '#00bcd4' }}
             variant="contained"
             onClick={() => {
-              navigate('/');
+              navigate(EnumRoutes.textbook);
             }}
           >
             Перейти в учебник

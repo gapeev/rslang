@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { setFinishGame } from './sprintSlice';
 
 export const Timer: React.FC = () => {
-  const [sec, setSec] = useState(5);
+  const [sec, setSec] = useState(60);
   const [isStart, setStart] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const dispatch = useDispatch();
