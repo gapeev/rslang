@@ -20,13 +20,26 @@ ChartJS.register(
   Legend
 );
 export const ShortStatGame = (props: dataStat) => {
+  const dateNow = new Date().toLocaleDateString();
   const mainObject = props.data?.optional?.gameStatistics as gameStatistics;
   const audioGame = mainObject?.audiochallenge;
   const sprintGame = mainObject?.sprint;
-  const countCorrectAns =
-    ((audioGame?.correctAnswers + sprintGame?.correctAnswers) /
-      (audioGame?.answersCount + sprintGame?.answersCount)) *
-    100;
+  let newWords = 0;
+  let learnedWords = 0;
+  let correctAnswers = 0;
+  let answersCount = 0;
+  if (dateNow === audioGame?.lastChanged) {
+    newWords += audioGame?.newWords;
+    learnedWords += audioGame?.learnedWords;
+    correctAnswers += audioGame?.correctAnswers;
+    answersCount += audioGame?.answersCount;
+  }
+  if (dateNow === sprintGame?.lastChanged) {
+    newWords += sprintGame?.newWords;
+    learnedWords += sprintGame?.learnedWords;
+    correctAnswers += sprintGame?.answersCount;
+    answersCount += sprintGame?.answersCount;
+  }
   const options = {
     responsive: true,
     maintainAspectRatio: true,
@@ -36,7 +49,7 @@ export const ShortStatGame = (props: dataStat) => {
       },
       title: {
         display: true,
-        text: `Краткосрочная статистика по словам`,
+        text: `Краткосрочная статистика по словам ${dateNow}`,
       },
     },
   };
@@ -46,17 +59,17 @@ export const ShortStatGame = (props: dataStat) => {
     datasets: [
       {
         label: 'Количество новых слов за день',
-        data: [audioGame?.newWords + sprintGame?.newWords],
+        data: [newWords],
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
       {
         label: 'Количество изученных слов за день',
-        data: [audioGame?.learnedWords + sprintGame?.learnedWords],
+        data: [learnedWords],
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
       },
       {
         label: 'Процент правильных ответов за день',
-        data: [countCorrectAns],
+        data: [(correctAnswers / answersCount) * 100],
         backgroundColor: 'rgba(75, 192, 192, 0.5)',
       },
     ],
