@@ -19,6 +19,11 @@ export interface userWord {
   id: string;
   difficulty: string;
   wordId: string;
+  optional: {
+    rightCount: number;
+    wrongCount: number;
+    rightRow: number;
+  };
 }
 export interface CardParam {
   id: string;

@@ -6,6 +6,7 @@ import { ShortStatGame } from './shortStat/ShortStatGame';
 import { loadStat } from './request/loadStat';
 import styles from './Statistics.module.css';
 import { ShortStatWords } from './shortStat/ShortStatWords';
+import authImg from './img/notAuth.jpeg';
 const StatisticsPage = () => {
   const allGraph = () => {
     return (
@@ -18,6 +19,16 @@ const StatisticsPage = () => {
           <CounChangeDay data={dataStat} />
           <CountCorrectDay data={dataStat} />
         </Container>
+      </Container>
+    );
+  };
+  const notAuth = () => {
+    return (
+      <Container className={styles.notAuthText}>
+        <p className={styles.notAuthText}>
+          Только авторизированные пользователи могут просматривать статистику!
+        </p>
+        <img src={authImg} alt="not_AUTH" className={styles.authImg} />
       </Container>
     );
   };
@@ -34,7 +45,7 @@ const StatisticsPage = () => {
   }, [TOKEN, USERID]);
   return (
     <Container className={styles.mainContainer}>
-      {TOKEN ? allGraph() : ''}
+      {TOKEN ? allGraph() : notAuth()}
     </Container>
   );
 };
