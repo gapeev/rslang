@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
@@ -6,18 +7,16 @@ import {
   DialogContentText,
   DialogTitle,
   Slide,
-  TextField,
 } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setGameAgain, setStartGame } from './sprintSlice';
+import { setGameAgain } from './sprintSlice';
 import { RootState } from '../../app/store';
-import { ISprintStat, SprintStat } from '../../common/Interfaces';
+import { ISprintStat } from '../../common/Interfaces';
 import { calculateEffect } from './creatorPair';
 
-const TITLE_MODAL = 'Твой результат';
 const RESULT_BAD = 'Попробуй еще раз!';
 const RESULT_NOTBAD = 'Неплохой результат!';
 const RESULT_GOOD = 'Хороший результат!';
@@ -60,80 +59,70 @@ export const ModalResults: React.FC<PropsModal> = ({ open }) => {
       TransitionComponent={Transition}
       aria-labelledby="modal-results"
     >
-      <DialogContent>
-        <DialogTitle
-          sx={{
-            color: 'white',
-            fontSize: '1.5rem',
-            fontFamily: 'Gilroy-Heavy',
-          }}
-        >
-          {displayResultPhrase()}
-        </DialogTitle>
-        <DialogContentText
-          sx={{
-            color: 'white',
-            fontSize: '1.5rem',
-            fontFamily: 'Gilroy-Heavy',
-          }}
-        >
-          Количество правильных ответов : {stat.correctAnswers}
-        </DialogContentText>
-        <DialogContentText
-          sx={{
-            color: 'white',
-            fontSize: '1.5rem',
-            fontFamily: 'Gilroy-Heavy',
-          }}
-        >
-          Лучшая серия :{stat.longestSeries}
-        </DialogContentText>
-        <DialogContentText
-          sx={{
-            color: 'white',
-            fontSize: '1.5rem',
-            fontFamily: 'Gilroy-Heavy',
-          }}
-        >
-          Твой прогресс :
-          {calculateEffect(stat.correctAnswers, stat.answersCount)}%
-        </DialogContentText>
-      </DialogContent>
-      {/* <Animate
-       start={() => ({
-          value: 0,
-        })}
-        update={() => ({
-          value: 100,
-          timing: {
-            duration:1.4 * 1000,
-            ease: easeQuadInOut,
-          },
-        })}
-    >
-         {value}
-    </Animate> */}
+      <Box sx={{ bgcolor: 'transparent' }}>
+        <DialogContent>
+          <DialogTitle
+            sx={{
+              color: '#00bcd4',
+              fontSize: '1.5rem',
+              fontFamily: 'Gilroy-Heavy',
+            }}
+          >
+            {displayResultPhrase()}
+          </DialogTitle>
+          <DialogContentText
+            sx={{
+              backgroundColor: 'transparent',
 
-      <DialogActions sx={{ display: 'flex', justifyContent: 'space-around' }}>
-        <Button
-          sx={{ color: '#ffd600', background: '#00bcd4' }}
-          variant="contained"
-          onClick={() => {
-            dispatch(setGameAgain());
-          }}
-        >
-          Сыграть еще раз
-        </Button>
-        <Button
-          sx={{ color: '#ffd600', background: '#00bcd4' }}
-          variant="contained"
-          onClick={() => {
-            navigate('/');
-          }}
-        >
-          Перейти в учебник
-        </Button>
-      </DialogActions>
+              color: '#00bcd4',
+              fontSize: '1.5rem',
+              fontFamily: 'Gilroy-Heavy',
+            }}
+          >
+            Количество правильных ответов : {stat.correctAnswers}
+          </DialogContentText>
+          <DialogContentText
+            sx={{
+              color: '#00bcd4',
+              fontSize: '1.5rem',
+              fontFamily: 'Gilroy-Heavy',
+            }}
+          >
+            Лучшая серия :{stat.longestSeries}
+          </DialogContentText>
+          <DialogContentText
+            sx={{
+              color: '#00bcd4',
+              fontSize: '1.5rem',
+              fontFamily: 'Gilroy-Heavy',
+            }}
+          >
+            Твой прогресс :
+            {calculateEffect(stat.correctAnswers, stat.answersCount)}%
+          </DialogContentText>
+        </DialogContent>
+
+        <DialogActions sx={{ display: 'flex', justifyContent: 'space-around' }}>
+          <Button
+            sx={{ color: 'white', background: '#00bcd4' }}
+            variant="contained"
+            onClick={() => {
+              dispatch(setGameAgain());
+            }}
+          >
+            Сыграть еще раз
+          </Button>
+          <Button
+            sx={{ color: 'white', background: '#00bcd4' }}
+            variant="contained"
+            onClick={() => {
+              navigate('/');
+            }}
+          >
+            Перейти в учебник
+          </Button>
+        </DialogActions>
+      </Box>
     </Dialog>
   );
 };

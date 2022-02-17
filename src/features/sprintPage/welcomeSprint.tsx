@@ -14,7 +14,7 @@ import classes from './SprintPage.module.css';
 const DESCRIBE_GAME =
   'Спринт - тренировка на скорость. Попробуй угадать как можно больше слов за минуту.';
 const TITLE_GAME = 'SPRINT';
-const CHOOSE_DIFFICULT = 'Выбери сложность игры';
+const CHOOSE_DIFFICULT = 'Выбери сложность игры : ';
 
 type propsWelcome = {
   isReady: boolean;

@@ -2,19 +2,16 @@ import { useEffect, useState } from 'react';
 import './timer.css';
 import AvTimerTwoToneIcon from '@mui/icons-material/AvTimerTwoTone';
 import { ModalResults } from './modalResults';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../app/store';
-import { IPairOfGame } from './sprintSlice';
+import { useDispatch } from 'react-redux';
+import { setFinishGame } from './sprintSlice';
 
 export const Timer: React.FC = () => {
-  const [sec, setSec] = useState(60);
+  const [sec, setSec] = useState(5);
   const [isStart, setStart] = useState(true);
   const [openModal, setOpenModal] = useState(false);
-  const words: IPairOfGame[] = useSelector(
-    (store: RootState) => store.sprint.words
-  );
+  const dispatch = useDispatch();
+
   const onRestart = (interval: NodeJS.Timeout) => {
-    console.log('reset');
     clearInterval(interval);
   };
 
@@ -23,6 +20,7 @@ export const Timer: React.FC = () => {
       const interval = setInterval(() => {
         setSec((prevTime) => {
           if (prevTime === 1) {
+            dispatch(setFinishGame(true));
             setStart(false);
             onRestart(interval);
             setOpenModal(true);

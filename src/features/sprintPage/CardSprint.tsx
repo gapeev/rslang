@@ -1,5 +1,8 @@
 import { Box, Typography, Grid, Button } from '@mui/material';
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { SyntheticEvent, useEffect, useRef } from 'react';
+import sounds from '../../common/sounds';
+import { RootState } from '../../app/store';
+import { useSelector } from 'react-redux';
 
 interface PropsCardSprint {
   onClickHandler: (result: boolean) => void | undefined;
@@ -12,15 +15,17 @@ export const CardSprint: React.FC<PropsCardSprint> = ({
   word,
   translate,
 }) => {
+  const isFinish = useSelector((store: RootState) => store.sprint.isFinish);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (true) {
+      if (!isFinish) {
         if (e.key === 'ArrowLeft') {
-          console.log('left');
-          onClickHandler(true);
-        } else if (e.key === 'ArrowRight') {
-          console.log('right');
+          audioRef.current?.play();
           onClickHandler(false);
+        } else if (e.key === 'ArrowRight') {
+          onClickHandler(true);
         }
       }
       e.preventDefault();
@@ -28,13 +33,16 @@ export const CardSprint: React.FC<PropsCardSprint> = ({
 
     window.addEventListener('keyup', handleKeyDown);
     return () => window.removeEventListener('keyup', handleKeyDown);
-  });
+  }, []);
 
   const handleMouse = (e: SyntheticEvent<HTMLButtonElement>) => {
     const val = e.target as HTMLButtonElement;
     if (val.textContent === 'Yes') {
       onClickHandler(true);
+      audioRef.current?.play();
     } else if (val.textContent === 'No') {
+      audioRef.current?.play();
+
       onClickHandler(false);
     }
   };
@@ -50,6 +58,7 @@ export const CardSprint: React.FC<PropsCardSprint> = ({
         fontSize: '3.5rem',
       }}
     >
+      <audio ref={audioRef} src={'../../assets/sounds/correct.mp3'} />
       <Box
         sx={{
           width: '100%',
@@ -84,8 +93,8 @@ export const CardSprint: React.FC<PropsCardSprint> = ({
           justifyContent: 'space-around',
         }}
       >
-        <Button onClick={handleMouse}>Yes</Button>
         <Button onClick={handleMouse}>No</Button>
+        <Button onClick={handleMouse}>Yes</Button>
       </Grid>
     </Box>
   );

@@ -42,6 +42,7 @@ export function calculatePoints(currPoints: number, factor: number) {
   const points = startPoints * factor + currPoints;
   return points;
 }
+
 export function calculateEffect(
   correctANswers: number,
   answersCount: number

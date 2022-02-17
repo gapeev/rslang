@@ -11,9 +11,9 @@ export function randomNumber() {
 export async function getWordsSprint(difficult: string): Promise<IWord[]> {
   let resp;
   try {
-    resp = await instanceAxios.get(
-      `/words?group=${difficult}&page=${randomNumber()}`
-    );
+    resp = await instanceAxios.get(`/words`, {
+      params: { group: difficult, page: randomNumber() },
+    });
   } catch {
     console.log('req failed');
   } finally {

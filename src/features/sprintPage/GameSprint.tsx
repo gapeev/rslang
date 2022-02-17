@@ -1,4 +1,5 @@
-import { Box } from '@mui/material';
+import { styled, Box } from '@mui/system';
+import BadgeUnstyled from '@mui/base/BadgeUnstyled';
 import StarIcon from '@mui/icons-material/Star';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -22,6 +23,45 @@ import useSound from 'use-sound';
 import styles from './SprintPage.module.css';
 import sounds from '../../common/sounds';
 import { Preloader } from '../../common/preloader';
+
+const StyledBadge = styled(BadgeUnstyled)`
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 14px;
+  font-variant: tabular-nums;
+  list-style: none;
+  font-feature-settings: 'tnum';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol';
+  position: relative;
+  display: inline-block;
+  line-height: 1;
+
+  & .MuiBadge-badge {
+    z-index: auto;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 20px;
+    white-space: nowrap;
+    text-align: center;
+    color: #ffc53d;
+    border-radius: 10px;
+    box-shadow: 0 0 0 1px #ffc53d;
+  }
+  & .MuiBadge-anchorOriginTopRight {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(50%, -50%);
+    transform-origin: 100% 0;
+  }
+`;
 
 export const GameSprint: React.FC = () => {
   const dispatch = useDispatch();
@@ -67,6 +107,7 @@ export const GameSprint: React.FC = () => {
       toggleIcon('true');
     } else {
       playWrong();
+      setFactor(1);
       setCounterTruth(0);
 
       dispatch(incrWrongAnswers());
@@ -79,9 +120,7 @@ export const GameSprint: React.FC = () => {
     dispatch(incrAnswersCount());
     setIdx(idx + 1);
   };
-  useEffect(() => {
-    console.log('points:', points, 'factor:', factor, 'points:', points);
-  }, [points, factor]);
+  useEffect(() => {}, [points, factor]);
 
   useEffect(() => {
     displayQuestion();
@@ -108,15 +147,15 @@ export const GameSprint: React.FC = () => {
 
     return (
       <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
-        <CheckCircleOutlineIcon
-          className={`${result === 'true' ? active : styles.icon_answers}`}
-          sx={{ p: '1rem', color: '#00bcd4' }}
-          fontSize="large"
-        />
         <CancelIcon
           className={`${result === 'false' ? active : styles.icon_answers}`}
           sx={{ p: '1rem', color: '#ab003c' }}
           color="error"
+          fontSize="large"
+        />
+        <CheckCircleOutlineIcon
+          className={`${result === 'true' ? active : styles.icon_answers}`}
+          sx={{ p: '1rem', color: '#00bcd4' }}
           fontSize="large"
         />
       </Box>
@@ -124,16 +163,18 @@ export const GameSprint: React.FC = () => {
   };
   const displayCounterPoints = () => {
     return (
-      <Box>
-        <StarIcon
-          className={counterTruth < 1 ? styles.star : styles.star_active}
-        />
-        <StarIcon
-          className={counterTruth < 2 ? styles.star : styles.star_active}
-        />
-        <StarIcon
-          className={counterTruth < 3 ? styles.star : styles.star_active}
-        />
+      <Box sx={{ '& > :not(style) + :not(style)': { ml: 4 } }}>
+        <StyledBadge badgeContent={factor}>
+          <StarIcon
+            className={counterTruth < 1 ? styles.star : styles.star_active}
+          />
+          <StarIcon
+            className={counterTruth < 2 ? styles.star : styles.star_active}
+          />
+          <StarIcon
+            className={counterTruth < 3 ? styles.star : styles.star_active}
+          />
+        </StyledBadge>
       </Box>
     );
   };

@@ -1,10 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { ISprintStat, SprintStat } from '../../common/Interfaces';
+import { createSlice, Action } from '@reduxjs/toolkit';
+import { ISprintStat } from '../../common/Interfaces';
 
 export interface ISprintGame {
   words: IPairOfGame[];
   group: number;
   isStart: boolean;
+  isFinish: boolean;
   stat: ISprintStat;
 }
 export interface IPairOfGame {
@@ -17,6 +18,7 @@ const initialState: ISprintGame = {
   words: [],
   group: 0,
   isStart: false,
+  isFinish: false,
   stat: {
     lastChanged: '',
     learnedWords: 0,
@@ -42,15 +44,20 @@ export const sprintSlice = createSlice({
     setStartGame(state, action) {
       return { ...state, isStart: action.payload };
     },
+    setFinishGame(state, action) {
+      return { ...state, isFinish: action.payload };
+    },
     setGameAgain(state) {
       state.words = [];
       state.isStart = false;
+      state.isFinish = false;
       state.stat.correctAnswers = 0;
       state.stat.wrongAnswers = 0;
       state.stat.currentSeries = 0;
       state.stat.answersCount = 0;
       state.stat.newWords = 0;
     },
+
     incrAnswersCount(state) {
       state.stat.answersCount = state.stat.answersCount + 1;
     },
@@ -83,5 +90,6 @@ export const {
   incrCurrentSeries,
   resetCurrentSeries,
   setLongestSeries,
+  setFinishGame,
 } = sprintSlice.actions;
 export default sprintSlice.reducer;
