@@ -38,7 +38,9 @@ const initialState: StatState = {
 export const statInit = createAsyncThunk(
   'stat/statInit',
   async ({ user }: { user: User }) => {
-    const statistics = await getStatistics(user);
+    const statistics = user.isAuth
+      ? await getStatistics(user)
+      : getEmptyStatistics();
     return { user, statistics };
   }
 );
@@ -48,6 +50,10 @@ export const statSlice = createSlice({
   initialState,
   reducers: {
     statWord: (state, action: PayloadAction<StatWordPayload>) => {
+      if (!state.user.isAuth) {
+        return;
+      }
+
       const { game, isNew, rightRow, isEasy, isRight } = action.payload;
       const date = getCurrentDateForStatistics();
 
@@ -55,6 +61,8 @@ export const statSlice = createSlice({
         game === 'audiochallenge'
           ? state.statistics.optional.gameStatistics.audiochallenge
           : state.statistics.optional.gameStatistics.sprint;
+
+      const { newWordStatistics, wordStatistics } = state.statistics.optional;
 
       if (date !== gameStatistics.lastChanged) {
         gameStatistics.newWords = 0;
@@ -66,8 +74,7 @@ export const statSlice = createSlice({
       gameStatistics.answersCount += 1;
 
       if (isNew) {
-        state.statistics.optional.newWordStatistics[date] =
-          (state.statistics.optional.newWordStatistics[date] ?? 0) + 1;
+        newWordStatistics[date] = (newWordStatistics[date] ?? 0) + 1;
         gameStatistics.newWords += 1;
       }
 
@@ -81,25 +88,14 @@ export const statSlice = createSlice({
       }
 
       if (rightRow === RIGHT_ANSWERS_ROW_TO_EASY - 1 && isRight) {
-        state.statistics.optional.wordStatistics[date] =
-          (state.statistics.optional.wordStatistics[date] ?? 0) + 1;
+        wordStatistics[date] = (wordStatistics[date] ?? 0) + 1;
         gameStatistics.learnedWords += 1;
       }
 
       if (isEasy && !isRight) {
-        state.statistics.optional.wordStatistics[date] =
-          (state.statistics.optional.wordStatistics[date] ?? 0) - 1;
+        wordStatistics[date] = (wordStatistics[date] ?? 0) - 1;
         gameStatistics.learnedWords -= 1;
       }
-
-      setStatistics(state.statistics, state.user);
-    },
-    statLearnedWord: (state, action: PayloadAction<boolean>) => {
-      const date = getCurrentDateForStatistics();
-
-      state.statistics.optional.wordStatistics[date] =
-        (state.statistics.optional.wordStatistics[date] ?? 0) +
-        (action.payload ? 1 : -1) * 1;
 
       setStatistics(state.statistics, state.user);
     },
@@ -114,7 +110,7 @@ export const statSlice = createSlice({
   },
 });
 
-export const { statWord, statLearnedWord } = statSlice.actions;
+export const { statWord } = statSlice.actions;
 
 export const selectStatState = (state: RootState) => state.stat.statistics;
 
