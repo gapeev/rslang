@@ -25,11 +25,18 @@ import { logoutUser } from '../authPage/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 
-export interface HeaderProps {
-  title: string;
-}
+const titles: { [path: string]: string } = {
+  '/': 'Главная',
+  '/signin': 'Вход / Регистрация',
+  '/textbook': 'Электронный учебник',
+  '/audiochallenge': 'Игра "Аудиовызов"',
+  '/sprint': 'Игра "Спринт"',
+  '/statistics': 'Статистика',
+  '/team': 'О команде',
+  '/404': 'Страница не найдена',
+};
 
-export function Header({ title }: HeaderProps) {
+export function Header() {
   const [isDrawerOpen, setState] = React.useState(false);
   const [textBtnLog, setTextBtnLog] = useState<string>();
 
@@ -70,7 +77,7 @@ export function Header({ title }: HeaderProps) {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              {title}
+              {titles[location.pathname] || titles['/404']}
             </Typography>
             <Button
               sx={{
