@@ -52,11 +52,11 @@ export const AuthPage: React.FC = () => {
   return (
     <Box
       sx={{
-        minHeight: '89vh',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        margin: 'auto',
       }}
     >
       <Card
