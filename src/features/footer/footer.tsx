@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -6,7 +7,15 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import rsschool from '../../assets/rs-school.svg';
 
+const pagesWithoutFooter: string[] = ['/audiochallenge', '/sprint'];
+
 export function Footer() {
+  const location = useLocation();
+
+  if (pagesWithoutFooter.includes(location.pathname)) {
+    return null;
+  }
+
   return (
     <>
       <Box
