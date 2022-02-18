@@ -19,7 +19,7 @@ export const FormLogin: React.FC = () => {
     console.log(data);
     dispatch(setUser(data.email));
     dispatch(getToken(data));
-    navigate(EnumRoutes.main);
+    navigate(EnumRoutes.home);
   };
 
   return (

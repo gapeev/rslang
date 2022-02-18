@@ -14,7 +14,6 @@ export const useRoutes = () => {
         path={EnumRoutes.audiochallenge}
         element={<Audiochallenge />}
       ></Route>
-      <Route path={EnumRoutes.main} element={<Home />}></Route>
       <Route path={EnumRoutes.textbook} element={<TextBookPage />}></Route>
       <Route path={EnumRoutes.statistics} element={<StatisticsPage />}></Route>
     </Routes>
