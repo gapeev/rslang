@@ -10,6 +10,7 @@ import styles from './Team.module.css';
 import gitHub from './img/github.svg';
 import alePashkou from './img/alePashkou.jpg';
 import gapeev from './img/gapeev.png';
+import uladziby from './img/uladziby.png';
 const Team = () => {
   return (
     <Container className={styles.mainContainer}>
@@ -93,7 +94,7 @@ const Team = () => {
       </Card>
       <Card sx={{ width: 345 }} className={styles.cardContainer}>
         <CardActionArea>
-          <CardMedia component="img" alt="Books" image={alePashkou} />
+          <CardMedia component="img" alt="Books" image={uladziby} />
           <CardContent>
             <Typography variant="body2" color="text.secondary" align={'center'}>
               Разработчик
