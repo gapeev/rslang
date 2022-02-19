@@ -89,6 +89,7 @@ export function Header() {
               onClick={() => {
                 if (textBtnLog === 'Выйти') {
                   dispatch(logoutUser());
+                  navigate(EnumRoutes.home);
                 } else {
                   navigate(EnumRoutes.auth);
                 }
