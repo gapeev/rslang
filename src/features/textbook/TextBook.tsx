@@ -123,7 +123,7 @@ const TextBookPage = () => {
       <Container className={styles.paginationContainer}>
         <Select
           value={category}
-          label="Category"
+          inputProps={{ 'aria-label': 'Without label' }}
           onChange={(event) => {
             setCategory(Number(event.target.value));
             if (event.target.value === 7) {
