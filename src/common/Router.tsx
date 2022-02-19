@@ -5,6 +5,7 @@ import { Home } from '../features/home/Home';
 import { EnumRoutes } from './Enums';
 import TextBookPage from '../features/textbook/TextBook';
 import StatisticsPage from '../features/statistics/Statistics';
+import NotFound from '../features/notFound/NotFound';
 export const useRoutes = () => {
   return (
     <Routes>
@@ -16,6 +17,7 @@ export const useRoutes = () => {
       ></Route>
       <Route path={EnumRoutes.textbook} element={<TextBookPage />}></Route>
       <Route path={EnumRoutes.statistics} element={<StatisticsPage />}></Route>
+      <Route path="*" element={<NotFound />}></Route>
     </Routes>
   );
 };
