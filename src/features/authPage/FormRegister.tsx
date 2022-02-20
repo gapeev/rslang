@@ -1,26 +1,47 @@
-import { TextField, Button } from '@mui/material';
+import { useEffect } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useAppDispatch } from '../../app/hooks';
 import { IUserSignUp } from '../../common/Interfaces';
+import { clearErrorMessage } from './authSlice';
 import { axiosUserSignUp } from './apiAuth';
+import { TextField, Button, Alert } from '@mui/material';
 
 export const FormRegister: React.FC = () => {
+  const dispatch = useAppDispatch();
+
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm<IUserSignUp>();
 
-  const validate = (data: IUserSignUp) => {
-    console.log(data);
-
-    axiosUserSignUp(data);
+  const validate = async (data: IUserSignUp) => {
+    const { error } = await axiosUserSignUp(data);
+    setErrorMessage('');
+    setSuccessMessage('');
+    if (error) {
+      setErrorMessage(error);
+    } else {
+      setSuccessMessage('Пользователь успешно зарегистрирован');
+    }
   };
+
+  useEffect(() => {
+    dispatch(clearErrorMessage());
+  }, [dispatch]);
+
   return (
     <form
       onSubmit={handleSubmit((data: IUserSignUp) => {
         validate(data);
       })}
     >
+      {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+      {successMessage && <Alert severity="success">{successMessage}</Alert>}
       <TextField
         error={!!errors.name}
         helperText={errors.name?.message}

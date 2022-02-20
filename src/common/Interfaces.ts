@@ -20,3 +20,10 @@ export interface JWTToken {
   userId: string;
   name: string;
 }
+
+export interface SignUpResponse {
+  id: string;
+  name: string;
+  email: string;
+  error?: string;
+}

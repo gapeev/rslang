@@ -43,7 +43,8 @@ export function Header() {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  const isAuth = useSelector((state: RootState) => Boolean(state.user.user));
+  const username = useSelector((state: RootState) => state.user.user);
+  const isAuth = username !== '';
   useEffect(() => {
     console.log(isAuth);
     isAuth ? setTextBtnLog('Выйти') : setTextBtnLog('Войти');
@@ -78,6 +79,17 @@ export function Header() {
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               {titles[location.pathname] || titles['/404']}
+            </Typography>
+            <Typography
+              component="div"
+              sx={{
+                textTransform: 'uppercase',
+                paddingRight: '20px',
+                marginRight: '15px',
+                borderRight: '2px solid #fff',
+              }}
+            >
+              {username}
             </Typography>
             <Button
               sx={{
