@@ -22,6 +22,8 @@ function TextBookCard(props: CardParam) {
     return '';
   };
   const rightRow = props.userWords[0]?.optional?.rightRow || 0;
+  const rightCount = props.userWords[0]?.optional?.rightCount || 0;
+  const wrongCount = props.userWords[0]?.optional?.wrongCount || 0;
   const difficulty = props.userWords[0]?.difficulty || '';
   const WORDID = props.id || props._id;
   const [color, setColor] = useState(defaultColor);
@@ -38,11 +40,16 @@ function TextBookCard(props: CardParam) {
             width: '100%',
           }}
         >
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="div"
+            className={styles.cardTitle}
+          >
             {props.word + ' - ' + props.transcription}{' '}
             {
               <VolumeUpIcon
-                className="cards-sound"
+                className={styles.cardSound}
                 onClick={() => {
                   props.setAduioList([
                     props.url + props.audio,
@@ -83,6 +90,12 @@ function TextBookCard(props: CardParam) {
               {difficulty !== 'easy'
                 ? `Прогресс: ${rightRow > 3 ? 3 : rightRow} / 3`
                 : ''}
+            </Typography>
+            <Typography style={{ margin: '0 auto' }}>
+              {difficulty !== 'easy' ? `Правильно: ${rightCount}` : ''}
+            </Typography>
+            <Typography style={{ margin: '0 auto' }}>
+              {difficulty !== 'easy' ? `Неправильно: ${wrongCount}` : ''}
             </Typography>
             <Button
               variant="contained"

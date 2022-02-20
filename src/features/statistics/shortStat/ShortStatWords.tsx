@@ -69,12 +69,12 @@ export const ShortStatWords = (props: dataStat) => {
       {
         label: 'Процент правильных ответов',
         data: [audioCorrectAns, sprintCorrectAns],
-        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+        backgroundColor: 'rgba(75, 192, 192, 0.5)',
       },
       {
         label: 'Самая длинная серия правильных ответов',
         data: [audioLongestSeries, sprintLongestSeries],
-        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+        backgroundColor: 'rgba(53, 162, 235, 0.5)',
       },
     ],
   };

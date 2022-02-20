@@ -100,6 +100,9 @@ const TextBookPage = () => {
   }, [TOKEN, USERID, category, navigate, page]);
   const audio = useMemo(() => new Audio(), []);
   useEffect(() => {
+    if (audioList.length === 0) {
+      return;
+    }
     audio.pause();
     audio.src = audioList[0];
     audio.play();
@@ -120,7 +123,7 @@ const TextBookPage = () => {
       <Container className={styles.paginationContainer}>
         <Select
           value={category}
-          label="Category"
+          inputProps={{ 'aria-label': 'Without label' }}
           onChange={(event) => {
             setCategory(Number(event.target.value));
             if (event.target.value === 7) {
