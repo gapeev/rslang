@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import {
   Link as NavLink,
   useLocation,
@@ -53,6 +53,7 @@ const TextBookPage = () => {
   const [correctWords, setCorrectWords] = useState(0);
   const [wrongWords, setWrongWords] = useState(0);
   const [audioList, setAudioList] = useState<string[]>([]);
+
   useEffect(() => {
     const arrPromis: Promise<AxiosResponse>[] = [];
     const wordsPromis = loadWords(
@@ -78,27 +79,38 @@ const TextBookPage = () => {
       );
       arrPromis.push(userPromis);
     }
-    axios.all(arrPromis).then(
-      axios.spread((data1, data2) => {
-        if (data2) {
-          setUserWords(data2.data);
-          setCorrectWords(calcCorrectWords(data1.data, data2.data, 'easy'));
-          setWrongWords(calcCorrectWords(data1.data, data2.data, 'hard'));
-        }
-        if (data1.data[0].paginatedResults) {
-          setWords(data1.data[0].paginatedResults);
-          if (data1.data[0].totalCount[0]) {
-            setpageQty(Math.ceil(data1.data[0].totalCount[0].count / 20));
+    axios
+      .all(arrPromis)
+      .then(
+        axios.spread((data1, data2) => {
+          if (data2) {
+            setUserWords(data2.data);
+            setCorrectWords(calcCorrectWords(data1.data, data2.data, 'easy'));
+            setWrongWords(calcCorrectWords(data1.data, data2.data, 'hard'));
           }
-        } else {
-          setpageQty(30);
-          setWords(data1.data);
+          if (data1.data[0].paginatedResults) {
+            setWords(data1.data[0].paginatedResults);
+            if (data1.data[0].totalCount[0]) {
+              setpageQty(Math.ceil(data1.data[0].totalCount[0].count / 20));
+            }
+          } else {
+            setpageQty(30);
+            setWords(data1.data);
+          }
+        })
+      )
+      .catch((err) => {
+        if (err.response.status === 401) {
+          document.location.href = '/signin';
         }
-      })
-    );
-  }, [TOKEN, USERID, category, page]);
+      });
+  }, [TOKEN, USERID, category, navigate, page]);
+  const audio = useMemo(() => new Audio(), []);
   useEffect(() => {
-    const audio = new Audio();
+    if (audioList.length === 0) {
+      return;
+    }
+    audio.pause();
     audio.src = audioList[0];
     audio.play();
     audio.onended = () => {
@@ -112,13 +124,13 @@ const TextBookPage = () => {
         };
       };
     };
-  }, [audioList]);
+  }, [audio, audioList]);
   return (
     <Box className={backgroundGen(category)}>
       <Container className={styles.paginationContainer}>
         <Select
           value={category}
-          label="Category"
+          inputProps={{ 'aria-label': 'Without label' }}
           onChange={(event) => {
             setCategory(Number(event.target.value));
             if (event.target.value === 7) {

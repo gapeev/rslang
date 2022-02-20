@@ -7,7 +7,11 @@ import { getToken, setUser } from './authSlice';
 import { useNavigate } from 'react-router-dom';
 
 export const FormLogin: React.FC = () => {
-  const { register, handleSubmit } = useForm({
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm({
     defaultValues: {
       email: 'greg@gmail.com',
       password: '11111111',
@@ -19,7 +23,7 @@ export const FormLogin: React.FC = () => {
     console.log(data);
     dispatch(setUser(data.email));
     dispatch(getToken(data));
-    navigate(EnumRoutes.main);
+    navigate(EnumRoutes.home);
   };
 
   return (
@@ -29,28 +33,43 @@ export const FormLogin: React.FC = () => {
       })}
     >
       <TextField
-        helperText="Please enter your email"
+        error={!!errors.email}
+        helperText={errors.email?.message}
         id="outlined-basic1"
-        label="Email address"
+        label="Электронная почта"
         variant="outlined"
         margin="normal"
-        {...register('email')}
+        {...register('email', {
+          pattern: {
+            value: /^[^@\s]+@[^@\s]+\.[^@\s]+$/i,
+            message:
+              'Электронная почта должна соответствовать шаблону username@example.com',
+          },
+          required: {
+            value: true,
+            message: 'Это поле является обязательным',
+          },
+        })}
         className="input"
         fullWidth
       />
       <TextField
-        helperText="Please enter your password"
+        error={!!errors.password}
+        helperText={errors.password?.message}
         id="outlined-basic2"
-        label="Password"
+        label="Пароль"
         fullWidth
         margin="normal"
         variant="outlined"
         type="password"
         {...register('password', {
-          required: 'This is requiered',
+          required: {
+            value: true,
+            message: 'Это поле является обязательным',
+          },
           minLength: {
-            value: 4,
-            message: 'Min length is four sympols',
+            value: 8,
+            message: 'Длина пароля должна быть не менее 8 символов',
           },
         })}
         className="input"

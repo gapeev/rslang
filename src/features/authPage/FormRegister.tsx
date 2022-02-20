@@ -4,7 +4,11 @@ import { IUserSignUp } from '../../common/Interfaces';
 import { axiosUserSignUp } from './apiAuth';
 
 export const FormRegister: React.FC = () => {
-  const { register, handleSubmit } = useForm<IUserSignUp>();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<IUserSignUp>();
 
   const validate = (data: IUserSignUp) => {
     console.log(data);
@@ -18,28 +22,46 @@ export const FormRegister: React.FC = () => {
       })}
     >
       <TextField
-        helperText="Введите имя"
+        error={!!errors.name}
+        helperText={errors.name?.message}
         id="outlined-basic1"
         label="Имя"
         variant="outlined"
         margin="normal"
-        {...register('name')}
+        {...register('name', {
+          required: {
+            value: true,
+            message: 'Это поле является обязательным',
+          },
+        })}
         className="input"
         fullWidth
       />
       <TextField
-        helperText="Введите адрес электронной почты"
+        error={!!errors.email}
+        helperText={errors.email?.message}
         id="outlined-basic2"
         label="Электронная почта"
         fullWidth
         margin="normal"
         variant="outlined"
         type="email"
-        {...register('email')}
+        {...register('email', {
+          pattern: {
+            value: /^[^@\s]+@[^@\s]+\.[^@\s]+$/i,
+            message:
+              'Электронная почта должна соответствовать шаблону username@example.com',
+          },
+          required: {
+            value: true,
+            message: 'Это поле является обязательным',
+          },
+        })}
         className="input"
       />
       <TextField
-        helperText="Придумайте пароль"
+        error={!!errors.password}
+        helperText={errors.password?.message}
         id="outlined-basic3"
         label="Пароль"
         fullWidth
@@ -47,10 +69,13 @@ export const FormRegister: React.FC = () => {
         variant="outlined"
         type="password"
         {...register('password', {
-          required: 'This is requiered',
+          required: {
+            value: true,
+            message: 'Это поле является обязательным',
+          },
           minLength: {
-            value: 4,
-            message: 'Min length is four sympols',
+            value: 8,
+            message: 'Длина пароля должна быть не менее 8 символов',
           },
         })}
         className="input"

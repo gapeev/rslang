@@ -1,5 +1,10 @@
 import * as React from 'react';
+import { Navigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { RootState } from '../../app/store';
+import { useAppSelector } from '../../app/hooks';
+import { EnumRoutes } from '../../common/Enums';
+import { User } from '../audiochallenge/audiochallengeSlice';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
@@ -45,24 +50,37 @@ function a11yProps(index: number) {
 export const AuthPage: React.FC = () => {
   const [value, setValue] = React.useState(0);
 
+  const {
+    token: { token, userId },
+  } = useAppSelector((state: RootState) => state.user);
+
+  const user: User = {
+    id: userId,
+    token,
+    isAuth: userId !== '',
+  };
+
   const handleChange = (event: any, newValue: React.SetStateAction<number>) => {
     setValue(newValue);
   };
 
+  if (user.isAuth) {
+    return <Navigate to={EnumRoutes.home} replace={true} />;
+  }
+
   return (
     <Box
       sx={{
-        minHeight: '89vh',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        margin: 'auto',
       }}
     >
       <Card
         sx={{
           width: 400,
-          height: `${value === 0 ? '350px' : '470px'}`,
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',

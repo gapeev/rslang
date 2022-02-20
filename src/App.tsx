@@ -21,7 +21,7 @@ function App() {
           backgroundPosition: 'center',
         }}
       >
-        <Header title="Главная" />
+        <Header />
         {routes}
         <Footer />
       </Box>
