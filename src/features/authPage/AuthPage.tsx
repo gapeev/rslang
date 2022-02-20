@@ -81,7 +81,6 @@ export const AuthPage: React.FC = () => {
       <Card
         sx={{
           width: 400,
-          height: `${value === 0 ? '350px' : '470px'}`,
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
