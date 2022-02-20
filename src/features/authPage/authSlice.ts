@@ -6,6 +6,7 @@ import { axiosUserSignIn } from './apiAuth';
 export interface IAuthState {
   token: JWTToken;
   user: string;
+  errorMessage?: string;
 }
 const userLocalStorage: IAuthState = JSON.parse(
   localStorage.getItem(RSLANG_USER)!
@@ -33,20 +34,31 @@ export const authSlice = createSlice({
       state.user = action.payload;
     },
     setToken(state, action) {
-      state.token = action.payload.data;
+      state.token = action.payload;
     },
     logoutUser(state) {
       state.user = emptyLocalStorage.user;
       state.token = emptyLocalStorage.token;
       localStorage.setItem(RSLANG_USER, JSON.stringify(state));
     },
+    clearErrorMessage(state) {
+      state.errorMessage = '';
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getToken.fulfilled, (state, action) => {
-      state.token = action.payload;
-      localStorage.setItem(RSLANG_USER, JSON.stringify(state));
+      const { error } = action.payload;
+      state.errorMessage = '';
+      if (error) {
+        state.errorMessage = error;
+      } else {
+        state.token = action.payload;
+        state.user = action.payload.name;
+        localStorage.setItem(RSLANG_USER, JSON.stringify(state));
+      }
     });
   },
 });
-export const { setToken, setUser, logoutUser } = authSlice.actions;
+export const { setToken, setUser, logoutUser, clearErrorMessage } =
+  authSlice.actions;
 export default authSlice.reducer;
