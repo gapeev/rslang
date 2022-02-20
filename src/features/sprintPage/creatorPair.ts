@@ -1,6 +1,8 @@
+import { ISprintStat } from './../../common/Interfaces';
 import { IWord } from '../../common/Interfaces';
-import { getWordsSprint } from './sprintApi';
+import { fetchWordsSprint } from './sprintApi';
 import { IPairOfGame, setPairOfGame } from './sprintSlice';
+import { getCurrentDateForStatistics } from '../stat/utils';
 
 export function creatorPair(obj: IWord[]): IPairOfGame[] {
   const _obj = shuffle(obj);
@@ -15,25 +17,57 @@ export function creatorPair(obj: IWord[]): IPairOfGame[] {
         isTruth: true,
         word: item.word,
         translate: item.wordTranslate,
+        idWord: item.id,
       });
     } else {
       out.push({
         isTruth: false,
         word: item.word,
         translate: arrTrans[random(0, arrTrans.length - 1)],
+        idWord: item.id,
       });
     }
   });
   return out;
 }
 
-export default async function getWords(
+export function updateStatistics(
+  currentStat: ISprintStat,
+  globalStat: ISprintStat
+): ISprintStat {
+  const {
+    learnedWords,
+    correctAnswers,
+    wrongAnswers,
+    longestSeries,
+    currentSeries,
+    answersCount,
+    newWords,
+  } = currentStat;
+
+  const statSprint = {
+    lastChanged: getCurrentDateForStatistics(),
+    learnedWords: globalStat.learnedWords + learnedWords,
+    correctAnswers: globalStat.correctAnswers + correctAnswers,
+    wrongAnswers: globalStat.wrongAnswers + wrongAnswers,
+    longestSeries:
+      globalStat.longestSeries > longestSeries
+        ? globalStat.longestSeries
+        : longestSeries,
+    currentSeries: currentSeries,
+    answersCount: globalStat.answersCount + answersCount,
+    newWords: globalStat.newWords + newWords,
+  };
+  return statSprint;
+}
+
+export default async function fetchWords(
   group: number,
+  page: number,
   dispatch: (arg0: any) => void
 ) {
-  await getWordsSprint(group.toString()).then((res) => {
+  await fetchWordsSprint(group.toString(), page).then((res) => {
     dispatch(setPairOfGame(creatorPair(res)));
-    console.log(res, 'out');
   });
 }
 

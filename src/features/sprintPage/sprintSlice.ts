@@ -1,9 +1,15 @@
-import { createSlice, Action } from '@reduxjs/toolkit';
+import { createSlice, Action, createAsyncThunk } from '@reduxjs/toolkit';
 import { ISprintStat } from '../../common/Interfaces';
+import { UserWord, Word } from '../audiochallenge/audiochallengeSlice';
+import { User } from '../stat/statSlice';
+import { fetchUserWords } from './sprintApi';
 
 export interface ISprintGame {
   words: IPairOfGame[];
+  wordsUser: UserWord[];
   group: number;
+  page: number;
+  isTextBook: boolean;
   isStart: boolean;
   isFinish: boolean;
   stat: ISprintStat;
@@ -12,11 +18,15 @@ export interface IPairOfGame {
   isTruth: boolean;
   word: string;
   translate: string;
+  idWord: string;
 }
 
 const initialState: ISprintGame = {
   words: [],
+  wordsUser: [],
   group: 0,
+  page: 0,
+  isTextBook: false,
   isStart: false,
   isFinish: false,
   stat: {
@@ -31,8 +41,22 @@ const initialState: ISprintGame = {
   },
 };
 
+export const startSprint = createAsyncThunk(
+  'sprint/startSprint',
+  async (user: User) => {
+    let words: UserWord[];
+    try {
+      words = user.isAuth ? await fetchUserWords(user) : [];
+      return words;
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  }
+);
+
 export const sprintSlice = createSlice({
-  name: 'sprintSlice',
+  name: 'sprint',
   initialState,
   reducers: {
     setPairOfGame(state, action) {
@@ -41,11 +65,17 @@ export const sprintSlice = createSlice({
     setGroupGame(state, action) {
       state.group = action.payload;
     },
+    setPageGame(state, action) {
+      state.page = action.payload;
+    },
+    setIsTextBook(state, action) {
+      state.isTextBook = action.payload;
+    },
     setStartGame(state, action) {
       return { ...state, isStart: action.payload };
     },
     setFinishGame(state, action) {
-      return { ...state, isFinish: action.payload };
+      state.isFinish = action.payload;
     },
     setGameAgain(state) {
       state.words = [];
@@ -76,14 +106,27 @@ export const sprintSlice = createSlice({
     setLongestSeries(state, action) {
       state.stat.longestSeries = action.payload;
     },
+    incrNewWords(state) {
+      state.stat.newWords = state.stat.newWords + 1;
+    },
+    incrLearnedWord(state) {
+      state.stat.learnedWords = state.stat.learnedWords + 1;
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(startSprint.fulfilled, (state, action) => {
+      state.wordsUser = action.payload;
+    });
   },
 });
 
 export const {
   setPairOfGame,
   setGroupGame,
+  setPageGame,
   setStartGame,
   setGameAgain,
+  setIsTextBook,
   incrAnswersCount,
   incrCorrectAnswers,
   incrWrongAnswers,
@@ -91,5 +134,7 @@ export const {
   resetCurrentSeries,
   setLongestSeries,
   setFinishGame,
+  incrNewWords,
+  incrLearnedWord,
 } = sprintSlice.actions;
 export default sprintSlice.reducer;

@@ -141,7 +141,6 @@ export async function fetchHardWords(
         if (rightCount === 0 && wrongCount === 0 && rightRow === 0) {
           hardWord.isNew = true;
         }
-
         return hardWord;
       });
     } else {

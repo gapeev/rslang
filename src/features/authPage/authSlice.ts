@@ -6,6 +6,7 @@ import { axiosUserSignIn } from './apiAuth';
 export interface IAuthState {
   token: JWTToken;
   user: string;
+  isAuth: boolean;
 }
 const userLocalStorage: IAuthState = JSON.parse(
   localStorage.getItem(RSLANG_USER)!
@@ -13,6 +14,7 @@ const userLocalStorage: IAuthState = JSON.parse(
 const emptyLocalStorage: IAuthState = {
   token: { message: '', token: '', refreshToken: '', userId: '', name: '' },
   user: '',
+  isAuth: false,
 };
 const initialState: IAuthState = userLocalStorage || emptyLocalStorage;
 
@@ -34,10 +36,12 @@ export const authSlice = createSlice({
     },
     setToken(state, action) {
       state.token = action.payload.data;
+      state.isAuth = true;
     },
     logoutUser(state) {
       state.user = emptyLocalStorage.user;
       state.token = emptyLocalStorage.token;
+      state.isAuth = false;
       localStorage.setItem(RSLANG_USER, JSON.stringify(state));
     },
   },

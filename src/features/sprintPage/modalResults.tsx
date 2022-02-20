@@ -12,7 +12,7 @@ import { TransitionProps } from '@mui/material/transitions';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setGameAgain } from './sprintSlice';
+import { setFinishGame, setGameAgain } from './sprintSlice';
 import { RootState } from '../../app/store';
 import { ISprintStat } from '../../common/Interfaces';
 import { calculateEffect } from './creatorPair';
@@ -43,9 +43,8 @@ export const ModalResults: React.FC<PropsModal> = ({ open }) => {
     (store: RootState) => store.sprint.stat
   );
 
-  const handleClose = () => {
-    console.log('close');
-  };
+  const handleClose = () => {};
+
   const displayResultPhrase = () => {
     const percent = calculateEffect(stat.correctAnswers, stat.answersCount);
     if (percent <= 25) return RESULT_BAD;
@@ -53,6 +52,7 @@ export const ModalResults: React.FC<PropsModal> = ({ open }) => {
     else if (percent <= 75) return RESULT_GOOD;
     else if (percent <= 100) return RESULT_PERFECT;
   };
+
   return (
     <Dialog
       open={open}

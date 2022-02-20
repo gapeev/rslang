@@ -25,9 +25,16 @@ import backgroundGen from './core/backgroundGen';
 import calcCorrectWords from './core/calcCorrectWords';
 import ScrollToTop from 'react-scroll-up';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import {
+  setGroupGame,
+  setIsTextBook,
+  setPageGame,
+} from '../sprintPage/sprintSlice';
+import { useDispatch } from 'react-redux';
 const BASE_URL = 'https://learnwords-team31.herokuapp.com/';
 
 const TextBookPage = () => {
+  const dispatch = useDispatch();
   let location = useLocation();
   const navigate = useNavigate();
   const AUTH =
@@ -166,8 +173,14 @@ const TextBookPage = () => {
           variant="contained"
           className={styles.button}
           component={Link}
-          to={`/sprint?group=${category - 1}&page=${page - 1}`}
-          disabled={wrongWords + correctWords === 20 ? true : false}
+          to={`/sprint`}
+          /* to={`/sprint?group=${category - 1}&page=${page - 1}`} */
+          onClick={() => {
+            dispatch(setPageGame(page - 1));
+            dispatch(setGroupGame(category - 1));
+            dispatch(setIsTextBook(true));
+          }}
+          /* disabled={wrongWords + correctWords === 20 ? true : false} */
         >
           Спринт
         </Button>

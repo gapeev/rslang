@@ -2,14 +2,11 @@ import { useEffect, useState } from 'react';
 import './timer.css';
 import AvTimerTwoToneIcon from '@mui/icons-material/AvTimerTwoTone';
 import { ModalResults } from './modalResults';
-import { useDispatch } from 'react-redux';
-import { setFinishGame } from './sprintSlice';
 
 export const Timer: React.FC = () => {
-  const [sec, setSec] = useState(60);
+  const [sec, setSec] = useState(59);
   const [isStart, setStart] = useState(true);
   const [openModal, setOpenModal] = useState(false);
-  const dispatch = useDispatch();
 
   const onRestart = (interval: NodeJS.Timeout) => {
     clearInterval(interval);
@@ -20,13 +17,10 @@ export const Timer: React.FC = () => {
       const interval = setInterval(() => {
         setSec((prevTime) => {
           if (prevTime === 1) {
-            dispatch(setFinishGame(true));
             setStart(false);
             onRestart(interval);
             setOpenModal(true);
-            //TODO send data to server
           }
-
           return prevTime - 1;
         });
       }, 1000);

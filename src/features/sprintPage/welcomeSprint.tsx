@@ -8,7 +8,12 @@ import {
   Radio,
   Button,
 } from '@mui/material';
+import { useEffect, useMemo } from 'react';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../app/hooks';
+import { RootState } from '../../app/store';
 import { ArrayDifficult } from '../../common/Enums';
+import { statInit, User } from '../stat/statSlice';
 import classes from './SprintPage.module.css';
 
 const DESCRIBE_GAME =
@@ -27,6 +32,25 @@ export const WelcomeSprint: React.FC<propsWelcome> = ({
   handleChange,
   handleOnStartGame,
 }) => {
+  const {
+    token: { token, userId },
+  } = useAppSelector((state: RootState) => state.user);
+
+  const dispatch = useDispatch();
+
+  const user: User = useMemo(
+    () => ({
+      id: userId,
+      token,
+      isAuth: userId !== '',
+    }),
+    [userId, token]
+  );
+
+  useEffect(() => {
+    dispatch(statInit({ user }));
+  }, [dispatch, user]);
+
   return (
     <Box
       sx={{

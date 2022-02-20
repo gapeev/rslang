@@ -64,7 +64,6 @@ export const statSlice = createSlice({
       gameStatistics.correctAnswers += Number(isRight);
       gameStatistics.wrongAnswers += Number(!isRight);
       gameStatistics.answersCount += 1;
-
       if (isNew) {
         state.statistics.optional.newWordStatistics[date] =
           (state.statistics.optional.newWordStatistics[date] ?? 0) + 1;
@@ -103,18 +102,22 @@ export const statSlice = createSlice({
 
       setStatistics(state.statistics, state.user);
     },
+    setStatSprint(state, action) {
+      state.statistics.optional.gameStatistics.sprint = action.payload;
+      setStatistics(state.statistics, state.user);
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(statInit.fulfilled, (state, action) => {
       const { user, statistics } = action.payload;
-      console.log(statistics); // TODO: DEV ONLY!
+      //console.log(statistics); // TODO: DEV ONLY!
       state.user = user;
       state.statistics = statistics;
     });
   },
 });
 
-export const { statWord, statLearnedWord } = statSlice.actions;
+export const { statWord, statLearnedWord, setStatSprint } = statSlice.actions;
 
 export const selectStatState = (state: RootState) => state.stat.statistics;
 

@@ -1,6 +1,5 @@
 import { Box, Typography, Grid, Button } from '@mui/material';
 import { SyntheticEvent, useEffect, useRef } from 'react';
-import sounds from '../../common/sounds';
 import { RootState } from '../../app/store';
 import { useSelector } from 'react-redux';
 
@@ -22,7 +21,6 @@ export const CardSprint: React.FC<PropsCardSprint> = ({
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isFinish) {
         if (e.key === 'ArrowLeft') {
-          audioRef.current?.play();
           onClickHandler(false);
         } else if (e.key === 'ArrowRight') {
           onClickHandler(true);
@@ -39,10 +37,7 @@ export const CardSprint: React.FC<PropsCardSprint> = ({
     const val = e.target as HTMLButtonElement;
     if (val.textContent === 'Yes') {
       onClickHandler(true);
-      audioRef.current?.play();
     } else if (val.textContent === 'No') {
-      audioRef.current?.play();
-
       onClickHandler(false);
     }
   };
@@ -58,7 +53,6 @@ export const CardSprint: React.FC<PropsCardSprint> = ({
         fontSize: '3.5rem',
       }}
     >
-      <audio ref={audioRef} src={'../../assets/sounds/correct.mp3'} />
       <Box
         sx={{
           width: '100%',
