@@ -87,7 +87,7 @@ export const statSlice = createSlice({
         gameStatistics.currentSeries = 0;
       }
 
-      if (rightRow === RIGHT_ANSWERS_ROW_TO_EASY - 1 && isRight) {
+      if (rightRow >= RIGHT_ANSWERS_ROW_TO_EASY - 1 && isRight && !isEasy) {
         wordStatistics[date] = (wordStatistics[date] ?? 0) + 1;
         gameStatistics.learnedWords += 1;
       }
