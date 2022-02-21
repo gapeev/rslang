@@ -113,7 +113,7 @@ export const statSlice = createSlice({
     },
     setStatSprint(state, action) {
       state.statistics.optional.gameStatistics.sprint = action.payload;
-      setStatistics(state.statistics, state.user);
+      //setStatistics(state.statistics, state.user);
     },
     /*  setNewWord(state) {
       const date = getCurrentDateForStatistics();

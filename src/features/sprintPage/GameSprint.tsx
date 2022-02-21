@@ -9,8 +9,8 @@ import { CardSprint } from './CardSprint';
 import { CounterPanelSprint } from './CounterPanelSprint';
 import fetchWords, {
   calculatePoints,
-  checkWord,
-  updateStatistics,
+  /*   checkWord,
+  updateStatistics, */
 } from './utils';
 import {
   incrAnswersCount,
@@ -25,24 +25,24 @@ import {
 import { Timer } from './Timer';
 import styles from './SprintPage.module.css';
 import { Preloader } from '../../common/preloader';
-import { setStatSprint, statInit, User } from '../stat/statSlice';
+import { /* setStatSprint,  statInit,*/ User } from '../stat/statSlice';
 import { randomNumber } from './sprintApi';
-import { UserWord } from '../audiochallenge/audiochallengeSlice';
-import { StyledBadge } from './constants';
+/* import { UserWord } from '../audiochallenge/audiochallengeSlice';
+ */ import { StyledBadge } from './constants';
 
 export const GameSprint: React.FC = () => {
   const dispatch = useDispatch();
   const words: IPairOfGame[] = useSelector(
     (store: RootState) => store.sprint.words
   );
-  const wordsUser: UserWord[] = useSelector(
+  /*  const wordsUser: UserWord[] = useSelector(
     (store: RootState) => store.sprint.wordsUser
-  );
+  ); */
   const group: number = useSelector((store: RootState) => store.sprint.group);
   const statisticsSprint = useSelector((store: RootState) => store.sprint.stat);
-  const statisticsGlobal = useSelector(
+  /*   const statisticsGlobal = useSelector(
     (store: RootState) => store.stat.statistics.optional.gameStatistics.sprint
-  );
+  ); */
   const userAuth = useSelector((store: RootState) => store.user.token);
   const user: User = useMemo(
     () => ({
@@ -56,7 +56,7 @@ export const GameSprint: React.FC = () => {
   const [result, setResult] = useState<string>('');
   const [idx, setIdx] = useState<number>(0);
   const [isLoading] = useState<boolean>(true);
-  const isFinish = useSelector((store: RootState) => store.sprint.isFinish);
+  //const isFinish = useSelector((store: RootState) => store.sprint.isFinish);
 
   //Points
   const [points, setPoints] = useState(0);
@@ -76,7 +76,7 @@ export const GameSprint: React.FC = () => {
   }, [userAuth]);
 
   //update stat after finish game
-  useEffect(() => {
+  /*   useEffect(() => {
     const user: User = {
       id: userAuth.userId,
       token: userAuth.token,
@@ -87,11 +87,11 @@ export const GameSprint: React.FC = () => {
       setStatSprint(updateStatistics(statisticsSprint, statisticsGlobal))
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFinish]);
+  }, [isFinish]); */
 
   const onClickHandler = (result: boolean) => {
     if (result === words[idx].isTruth) {
-      checkWord(wordsUser, words, true, idx, user, dispatch);
+      //checkWord(wordsUser, words, true, idx, user, dispatch);
 
       if (counterTruth > 2) {
         setCounterTruth(0);
@@ -105,7 +105,7 @@ export const GameSprint: React.FC = () => {
       dispatch(incrCurrentSeries());
       toggleIcon('true');
     } else {
-      checkWord(wordsUser, words, false, idx, user, dispatch);
+      // checkWord(wordsUser, words, false, idx, user, dispatch);
       setFactor(1);
       setCounterTruth(0);
 

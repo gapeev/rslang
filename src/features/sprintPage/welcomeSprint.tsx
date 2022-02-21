@@ -13,7 +13,7 @@ import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
 import { RootState } from '../../app/store';
 import { ArrayDifficult } from '../../common/Enums';
-import { statInit, User } from '../stat/statSlice';
+import { /* statInit, */ User } from '../stat/statSlice';
 import classes from './SprintPage.module.css';
 
 const DESCRIBE_GAME =
@@ -48,7 +48,7 @@ export const WelcomeSprint: React.FC<propsWelcome> = ({
   );
 
   useEffect(() => {
-    dispatch(statInit({ user }));
+    //dispatch(statInit({ user }));
   }, [dispatch, user]);
 
   return (
