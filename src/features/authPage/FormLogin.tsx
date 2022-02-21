@@ -1,29 +1,27 @@
-import { useForm } from 'react-hook-form';
-import { Button, TextField } from '@mui/material';
-import { IUserSignIn } from '../../common/Interfaces';
 import { useDispatch } from 'react-redux';
-import { EnumRoutes } from '../../common/Enums';
-import { getToken, setUser } from './authSlice';
-import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { RootState } from '../../app/store';
+import { useAppSelector } from '../../app/hooks';
+import { getToken } from './authSlice';
+import { IUserSignIn } from '../../common/Interfaces';
+import { Alert, Button, TextField } from '@mui/material';
 
 export const FormLogin: React.FC = () => {
+  const { errorMessage } = useAppSelector((state: RootState) => state.user);
+
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm({
     defaultValues: {
-      email: 'greg@gmail.com',
-      password: '11111111',
+      email: '',
+      password: '',
     },
   });
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const validate = (data: IUserSignIn) => {
-    console.log(data);
-    dispatch(setUser(data.email));
     dispatch(getToken(data));
-    navigate(EnumRoutes.home);
   };
 
   return (
@@ -32,6 +30,7 @@ export const FormLogin: React.FC = () => {
         validate(data);
       })}
     >
+      {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
       <TextField
         error={!!errors.email}
         helperText={errors.email?.message}

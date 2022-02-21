@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Navigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { RootState } from '../../app/store';
-import { useAppSelector } from '../../app/hooks';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { EnumRoutes } from '../../common/Enums';
 import { User } from '../audiochallenge/audiochallengeSlice';
 import Tabs from '@mui/material/Tabs';
@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import { Card, CardContent } from '@mui/material';
 import { FormLogin } from './FormLogin';
 import { FormRegister } from './FormRegister';
+import { clearErrorMessage } from './authSlice';
 
 TabPanel.propTypes = {
   children: PropTypes.node,
@@ -48,6 +49,7 @@ function a11yProps(index: number) {
 }
 
 export const AuthPage: React.FC = () => {
+  const dispatch = useAppDispatch();
   const [value, setValue] = React.useState(0);
 
   const {
@@ -63,6 +65,10 @@ export const AuthPage: React.FC = () => {
   const handleChange = (event: any, newValue: React.SetStateAction<number>) => {
     setValue(newValue);
   };
+
+  React.useEffect(() => {
+    dispatch(clearErrorMessage());
+  }, [dispatch]);
 
   if (user.isAuth) {
     return <Navigate to={EnumRoutes.home} replace={true} />;

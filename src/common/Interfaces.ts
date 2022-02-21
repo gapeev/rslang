@@ -73,3 +73,9 @@ export interface ISprintStat {
   answersCount: number;
   newWords: number;
 }
+export interface SignUpResponse {
+  id: string;
+  name: string;
+  email: string;
+  error?: string;
+}
