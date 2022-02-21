@@ -20,7 +20,7 @@ export function Home() {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
   }
-  const [word, setWord] = useState<word | undefined>(undefined);
+  const [word, setWord] = useState<word>();
   useEffect(() => {
     loadWords(
       `https://learnwords-team31.herokuapp.com/words?group=${getRandomInt(
@@ -36,13 +36,13 @@ export function Home() {
           mt: '40px',
           mb: '40px',
           display: 'flex',
-          alignItems: 'start',
-          justifyContent: 'space-between',
+          alignItems: 'center',
+          justifyContent: 'center',
           gap: '30px',
           flexWrap: 'wrap',
         }}
       >
-        <Card sx={{ maxWidth: 345, flex: 1 }}>
+        <Card sx={{ maxWidth: 260 }}>
           <CardActionArea component={Link} to="/textbook">
             <CardHeader title="Учебник" />
             <CardMedia
@@ -60,7 +60,7 @@ export function Home() {
           </CardActionArea>
         </Card>
 
-        <Card sx={{ maxWidth: 345, flex: 1 }}>
+        <Card sx={{ maxWidth: 260 }}>
           <CardActionArea component={Link} to="/audiochallenge">
             <CardHeader title="Аудиовызов" />
             <CardMedia
@@ -86,7 +86,7 @@ export function Home() {
           </CardActionArea>
         </Card>
 
-        <Card sx={{ maxWidth: 345, flex: 1 }}>
+        <Card sx={{ maxWidth: 260 }}>
           <CardActionArea component={Link} to="/sprint">
             <CardHeader title="Спринт" />
             <CardMedia
@@ -106,7 +106,7 @@ export function Home() {
         </Card>
 
         <Card
-          sx={{ maxWidth: 345, flex: 1 }}
+          sx={{ maxWidth: 260 }}
           onClick={() => {
             loadWords(
               `https://learnwords-team31.herokuapp.com/words?group=${getRandomInt(
@@ -121,7 +121,9 @@ export function Home() {
             <CardMedia
               component="img"
               height="194"
-              src={`https://learnwords-team31.herokuapp.com/${word?.image}`}
+              src={`https://learnwords-team31.herokuapp.com/${
+                word?.image || 'files/27_2934.jpg'
+              }`}
               alt="Books"
             />
             <CardContent>
