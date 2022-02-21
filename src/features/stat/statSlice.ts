@@ -88,12 +88,16 @@ export const statSlice = createSlice({
       }
 
       if (rightRow >= RIGHT_ANSWERS_ROW_TO_EASY - 1 && isRight && !isEasy) {
-        wordStatistics[date] = (wordStatistics[date] ?? 0) + 1;
+        const lastKey = Object.keys(wordStatistics);
+        const lastValue = wordStatistics[lastKey[lastKey.length - 1]] || 0;
+        wordStatistics[date] = lastValue + 1;
         gameStatistics.learnedWords += 1;
       }
 
       if (isEasy && !isRight) {
-        wordStatistics[date] = (wordStatistics[date] ?? 0) - 1;
+        const lastKey = Object.keys(wordStatistics);
+        const lastValue = wordStatistics[lastKey[lastKey.length - 1]] || 0;
+        wordStatistics[date] = lastValue - 1;
         gameStatistics.learnedWords -= 1;
       }
 
