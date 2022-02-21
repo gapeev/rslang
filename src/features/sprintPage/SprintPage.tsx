@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { ArrayDifficult } from '../../common/Enums';
-import fetchWords from './creatorPair';
+import fetchWords from './utils';
 import { GameSprint } from './GameSprint';
 import { WelcomeSprint } from './welcomeSprint';
 import {
@@ -43,7 +43,6 @@ export const SpringPage: React.FC = () => {
     fetchWords(group, randomNumber(), dispatch);
   };
   useEffect(() => {
-    dispatch(setFinishGame(true));
     dispatch(setGameAgain());
     dispatch(setIsTextBook(false));
   }, [navigate]);
@@ -59,7 +58,7 @@ export const SpringPage: React.FC = () => {
   return (
     <Box
       sx={{
-        minHeight: '89vh',
+        minHeight: '94vh',
       }}
     >
       {isStart ? (

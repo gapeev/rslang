@@ -21,8 +21,6 @@ export async function fetchWordsSprint(
     });
   } catch {
     console.log('req failed');
-  } finally {
-    console.log(resp?.data);
   }
   return resp?.data;
 }
@@ -43,4 +41,41 @@ export async function fetchUserWords(user: User): Promise<UserWord[]> {
     return [];
   }
   return response.data;
+}
+
+export async function postUserWords(
+  user: User,
+  userWord: UserWord
+): Promise<void> {
+  const { difficulty, optional } = userWord;
+  try {
+    await instanceAxios.post(
+      `users/${user.id}/words/${userWord.id}`,
+      { difficulty, optional },
+      {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
+    );
+  } catch (e) {}
+}
+
+export async function putUserWords(
+  user: User,
+  userWord: UserWord
+): Promise<void> {
+  const { difficulty, optional } = userWord;
+  console.log(userWord);
+  try {
+    await instanceAxios.put(
+      `users/${user.id}/words/${userWord.id}`,
+      { difficulty, optional },
+      {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
+    );
+  } catch (e) {}
 }

@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { ISprintStat } from '../../common/Interfaces';
-import { calculateEffect } from './creatorPair';
+import { calculateEffect } from './utils';
 import styles from './SprintPage.module.css';
 
 type PropsCounter = {

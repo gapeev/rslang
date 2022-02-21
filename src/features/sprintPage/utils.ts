@@ -1,8 +1,19 @@
-import { ISprintStat } from './../../common/Interfaces';
+import { User } from './../audiochallenge/audiochallengeSlice';
+import { ISprintStat } from '../../common/Interfaces';
 import { IWord } from '../../common/Interfaces';
 import { fetchWordsSprint } from './sprintApi';
-import { IPairOfGame, setPairOfGame } from './sprintSlice';
+import {
+  incrLearnedWord,
+  incrNewWords,
+  IPairOfGame,
+  setPairOfGame,
+  setUserWords,
+  updateUserWords,
+} from './sprintSlice';
 import { getCurrentDateForStatistics } from '../stat/utils';
+import { UserWord } from '../audiochallenge/audiochallengeSlice';
+import { Dispatch } from '@reduxjs/toolkit';
+import { setNewWord } from '../stat/statSlice';
 
 export function creatorPair(obj: IWord[]): IPairOfGame[] {
   const _obj = shuffle(obj);
@@ -99,4 +110,48 @@ export function shuffle<T>(array: T[]): T[] {
 
 export function random(min: number, max: number) {
   return Math.round(min + Math.random() * (max - min));
+}
+
+export function checkWord(
+  wordsUser: UserWord[],
+  words: IPairOfGame[],
+  isTruth: boolean,
+  idx: number,
+  user: User,
+  dispatch: Dispatch<any>
+) {
+  const userWord = wordsUser.find((el) => el.id === words[idx].idWord) ?? {
+    id: words[idx].idWord,
+    wordId: words[idx].idWord,
+    difficulty: 'easy',
+    optional: {
+      rightCount: 0,
+      wrongCount: 0,
+      rightRow: 0,
+    },
+  };
+  let { rightCount, wrongCount, rightRow } = userWord.optional;
+
+  if (isTruth) {
+    if (rightCount === 0 && wrongCount === 0 && rightRow === 0) {
+      userWord.optional.rightCount += 1;
+      userWord.optional.rightRow += 1;
+
+      dispatch(incrNewWords());
+      dispatch(setNewWord());
+      dispatch(setUserWords({ word: userWord, user: user }));
+    } else if (rightCount === 2) {
+      userWord.optional.rightCount += 1;
+      userWord.optional.rightRow += 1;
+      dispatch(updateUserWords({ word: userWord, user: user }));
+      dispatch(incrLearnedWord());
+    } else {
+      userWord.optional.rightCount += 1;
+      userWord.optional.rightRow += 1;
+    }
+  } else {
+    userWord.optional.wrongCount += 1;
+    userWord.optional.rightRow = 0;
+    userWord.difficulty = 'hard';
+  }
 }

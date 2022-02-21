@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react';
 import './timer.css';
 import AvTimerTwoToneIcon from '@mui/icons-material/AvTimerTwoTone';
 import { ModalResults } from './modalResults';
+import { setFinishGame } from './sprintSlice';
+import { useDispatch } from 'react-redux';
 
 export const Timer: React.FC = () => {
   const [sec, setSec] = useState(59);
   const [isStart, setStart] = useState(true);
   const [openModal, setOpenModal] = useState(false);
-
+  const dispatch = useDispatch();
   const onRestart = (interval: NodeJS.Timeout) => {
     clearInterval(interval);
   };
@@ -25,7 +27,14 @@ export const Timer: React.FC = () => {
         });
       }, 1000);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (!isStart) {
+      dispatch(setFinishGame(true));
+    }
+  }, [dispatch, isStart, openModal]);
 
   return (
     <div className="container_timer">

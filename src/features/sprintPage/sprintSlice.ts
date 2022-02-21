@@ -1,8 +1,8 @@
-import { createSlice, Action, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { ISprintStat } from '../../common/Interfaces';
-import { UserWord, Word } from '../audiochallenge/audiochallengeSlice';
+import { UserWord } from '../audiochallenge/audiochallengeSlice';
 import { User } from '../stat/statSlice';
-import { fetchUserWords } from './sprintApi';
+import { fetchUserWords, postUserWords, putUserWords } from './sprintApi';
 
 export interface ISprintGame {
   words: IPairOfGame[];
@@ -59,6 +59,25 @@ export const sprintSlice = createSlice({
   name: 'sprint',
   initialState,
   reducers: {
+    setUserWords(state, action: PayloadAction<{ word: UserWord; user: User }>) {
+      const user = action.payload.user;
+      const word = action.payload.word;
+      if (user.isAuth) postUserWords(user, word);
+
+      state.wordsUser.push(word);
+    },
+    updateUserWords(
+      state,
+      action: PayloadAction<{ word: UserWord; user: User }>
+    ) {
+      const user = action.payload.user;
+      const word = action.payload.word;
+      if (user.isAuth) {
+        putUserWords(user, word).then(() => {
+          state.wordsUser = [...state.wordsUser];
+        });
+      }
+    },
     setPairOfGame(state, action) {
       return { ...state, words: [...state.words, ...action.payload] };
     },
@@ -107,7 +126,7 @@ export const sprintSlice = createSlice({
       state.stat.longestSeries = action.payload;
     },
     incrNewWords(state) {
-      state.stat.newWords = state.stat.newWords + 1;
+      state.stat.newWords += 1;
     },
     incrLearnedWord(state) {
       state.stat.learnedWords = state.stat.learnedWords + 1;
@@ -121,6 +140,8 @@ export const sprintSlice = createSlice({
 });
 
 export const {
+  setUserWords,
+  updateUserWords,
   setPairOfGame,
   setGroupGame,
   setPageGame,

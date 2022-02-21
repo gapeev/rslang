@@ -1,20 +1,21 @@
-import { styled, Box } from '@mui/system';
-import BadgeUnstyled from '@mui/base/BadgeUnstyled';
+import { Box } from '@mui/system';
 import StarIcon from '@mui/icons-material/Star';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import { CardSprint } from './CardSprint';
 import { CounterPanelSprint } from './CounterPanelSprint';
-import fetchWords, { calculatePoints, updateStatistics } from './creatorPair';
+import fetchWords, {
+  calculatePoints,
+  checkWord,
+  updateStatistics,
+} from './utils';
 import {
   incrAnswersCount,
   incrCorrectAnswers,
   incrCurrentSeries,
-  incrLearnedWord,
-  incrNewWords,
   incrWrongAnswers,
   IPairOfGame,
   resetCurrentSeries,
@@ -22,61 +23,12 @@ import {
   startSprint,
 } from './sprintSlice';
 import { Timer } from './Timer';
-import useSound from 'use-sound';
 import styles from './SprintPage.module.css';
-import sounds from '../../common/sounds';
 import { Preloader } from '../../common/preloader';
-import { getStatistics, setStatistics } from '../stat/statAPI';
 import { setStatSprint, statInit, User } from '../stat/statSlice';
-import { JWTToken } from '../../common/Interfaces';
-import { IAuthState } from '../authPage/authSlice';
-import { Statistics } from '../stat/types';
-import { fetchUserWords, randomNumber } from './sprintApi';
+import { randomNumber } from './sprintApi';
 import { UserWord } from '../audiochallenge/audiochallengeSlice';
-
-const StyledBadge = styled(BadgeUnstyled)`
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  color: rgba(0, 0, 0, 0.85);
-  font-size: 14px;
-  font-variant: tabular-nums;
-  list-style: none;
-  font-feature-settings: 'tnum';
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol';
-  position: relative;
-  display: inline-block;
-  line-height: 1;
-
-  & .MuiBadge-badge {
-    z-index: auto;
-    min-width: 20px;
-    height: 20px;
-    padding: 0 6px;
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 20px;
-    white-space: nowrap;
-    text-align: center;
-    color: #ffc53d;
-    border-radius: 10px;
-    box-shadow: 0 0 0 1px #ffc53d;
-  }
-  & .MuiBadge-anchorOriginTopRight {
-    position: absolute;
-    top: 0;
-    right: 0;
-    transform: translate(50%, -50%);
-    transform-origin: 100% 0;
-  }
-`;
-type TypeUserStat = {
-  id: JWTToken['userId'];
-  token: JWTToken['token'];
-  isAuth: IAuthState['isAuth'];
-};
+import { StyledBadge } from './constants';
 
 export const GameSprint: React.FC = () => {
   const dispatch = useDispatch();
@@ -103,19 +55,13 @@ export const GameSprint: React.FC = () => {
 
   const [result, setResult] = useState<string>('');
   const [idx, setIdx] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading] = useState<boolean>(true);
   const isFinish = useSelector((store: RootState) => store.sprint.isFinish);
 
   //Points
   const [points, setPoints] = useState(0);
   const [factor, setFactor] = useState(1);
   const [counterTruth, setCounterTruth] = useState(0);
-
-  //Sounds
-  // const [audio] = useState(new Audio(sounds.correct));
-  //const audioRef = new Audio(sounds.correct);
-  const [playCorrect] = useSound(sounds.skip);
-  const [playWrong] = useSound(sounds.wrong);
 
   const toggleIcon = (str: string) => {
     setResult(str);
@@ -126,9 +72,10 @@ export const GameSprint: React.FC = () => {
 
   useEffect(() => {
     dispatch(startSprint(user));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userAuth]);
 
-  //UPDATE STATISTICS AFTER FINISH GAME
+  //update stat after finish game
   useEffect(() => {
     const user: User = {
       id: userAuth.userId,
@@ -139,32 +86,13 @@ export const GameSprint: React.FC = () => {
     dispatch(
       setStatSprint(updateStatistics(statisticsSprint, statisticsGlobal))
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFinish]);
 
   const onClickHandler = (result: boolean) => {
-    /* playSound(true, true); */
-
-    //TODO
-    const userWord = wordsUser.find((el) => el.id === words[idx].idWord) ?? {
-      id: words[idx].idWord,
-      wordId: words[idx].idWord,
-      optional: {
-        rightCount: 0,
-        wrongCount: 0,
-        rightRow: 0,
-      },
-    };
-
-    const { rightCount, wrongCount, rightRow } = userWord.optional;
-    if (rightCount === 0 && wrongCount === 0 && rightRow === 0) {
-      dispatch(incrNewWords());
-    } else if (rightCount > 1) {
-      dispatch(incrLearnedWord());
-    }
-
-    console.log(userWord);
-
     if (result === words[idx].isTruth) {
+      checkWord(wordsUser, words, true, idx, user, dispatch);
+
       if (counterTruth > 2) {
         setCounterTruth(0);
         setFactor(factor + 1);
@@ -177,7 +105,7 @@ export const GameSprint: React.FC = () => {
       dispatch(incrCurrentSeries());
       toggleIcon('true');
     } else {
-      playWrong();
+      checkWord(wordsUser, words, false, idx, user, dispatch);
       setFactor(1);
       setCounterTruth(0);
 
@@ -194,9 +122,10 @@ export const GameSprint: React.FC = () => {
 
   useEffect(() => {
     displayQuestion();
-    if (idx === words.length - 1) {
+    if (idx === words.length - 4) {
       fetchWords(group, randomNumber(), dispatch);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idx]);
 
   const displayQuestion = () => {
@@ -252,7 +181,7 @@ export const GameSprint: React.FC = () => {
   return (
     <Box
       sx={{
-        minHeight: '89vh',
+        minHeight: '94vh',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-around',
@@ -271,10 +200,3 @@ export const GameSprint: React.FC = () => {
     </Box>
   );
 };
-/* const playSound = (isCorrect: any, soundOn: any) => {
-  const correctSound = document.querySelector("#correctSound") as HTMLAudioElement;
-  const errorSound = document.querySelector("#errorSound") as HTMLAudioElement;
-  if (soundOn) {
-    isCorrect ? correctSound.play() : errorSound.play();
-  }
-}; */

@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setFinishGame, setGameAgain } from './sprintSlice';
 import { RootState } from '../../app/store';
 import { ISprintStat } from '../../common/Interfaces';
-import { calculateEffect } from './creatorPair';
+import { calculateEffect } from './utils';
 import { EnumRoutes } from '../../common/Enums';
 
 const RESULT_BAD = 'Попробуй еще раз!';

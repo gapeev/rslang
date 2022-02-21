@@ -54,7 +54,7 @@ export const WelcomeSprint: React.FC<propsWelcome> = ({
   return (
     <Box
       sx={{
-        minHeight: '79vh',
+        minHeight: '84vh',
       }}
       className={classes.start_screen}
     >
