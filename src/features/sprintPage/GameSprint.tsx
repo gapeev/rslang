@@ -145,7 +145,7 @@ export const GameSprint: React.FC = () => {
     const active = styles.icon_answers + ' ' + styles.active;
 
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
+      <Box sx={{ justifyContent: 'space-around', m: '1rem' }}>
         <CancelIcon
           className={`${result === 'false' ? active : styles.icon_answers}`}
           sx={{ p: '1rem', color: '#ab003c' }}
@@ -181,7 +181,6 @@ export const GameSprint: React.FC = () => {
   return (
     <Box
       sx={{
-        minHeight: '94vh',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-around',
@@ -196,7 +195,6 @@ export const GameSprint: React.FC = () => {
       {displayQuestion()}
       {dispalayResults()}
       {words.length === 0 ? <Preloader status={isLoading} /> : ''}
-      <audio id="correctSound" src="../assets/correct.mp3" />
     </Box>
   );
 };

@@ -54,7 +54,8 @@ export const SpringPage: React.FC = () => {
   return (
     <Box
       sx={{
-        minHeight: '94vh',
+        display: 'flex',
+        flex: 'auto',
       }}
     >
       {isStart ? (

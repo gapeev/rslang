@@ -35,9 +35,9 @@ export const CardSprint: React.FC<PropsCardSprint> = ({
 
   const handleMouse = (e: SyntheticEvent<HTMLButtonElement>) => {
     const val = e.target as HTMLButtonElement;
-    if (val.textContent === 'Yes') {
+    if (val.textContent === 'Да') {
       onClickHandler(true);
-    } else if (val.textContent === 'No') {
+    } else if (val.textContent === 'Нет') {
       onClickHandler(false);
     }
   };
@@ -87,8 +87,8 @@ export const CardSprint: React.FC<PropsCardSprint> = ({
           justifyContent: 'space-around',
         }}
       >
-        <Button onClick={handleMouse}>No</Button>
-        <Button onClick={handleMouse}>Yes</Button>
+        <Button onClick={handleMouse}>Нет</Button>
+        <Button onClick={handleMouse}>Да</Button>
       </Grid>
     </Box>
   );

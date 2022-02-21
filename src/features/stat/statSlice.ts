@@ -115,15 +115,15 @@ export const statSlice = createSlice({
       state.statistics.optional.gameStatistics.sprint = action.payload;
       setStatistics(state.statistics, state.user);
     },
-    setNewWord(state) {
+    /*  setNewWord(state) {
       const date = getCurrentDateForStatistics();
       state.statistics.optional.newWordStatistics[date] += 1;
       setStatistics(state.statistics, state.user);
-    },
-    setLearnedWord(state, action) {
+    }, */
+    /*  setLearnedWord(state, action) {
       state.statistics.optional.gameStatistics.sprint.learnedWords += 1;
       setStatistics(state.statistics, state.user);
-    },
+    }, */
   },
   extraReducers: (builder) => {
     builder.addCase(statInit.fulfilled, (state, action) => {
@@ -135,13 +135,7 @@ export const statSlice = createSlice({
   },
 });
 
-export const {
-  statWord,
-  statLearnedWord,
-  setStatSprint,
-  setNewWord,
-  setLearnedWord,
-} = statSlice.actions;
+export const { statWord, statLearnedWord, setStatSprint } = statSlice.actions;
 
 export const selectStatState = (state: RootState) => state.stat.statistics;
 

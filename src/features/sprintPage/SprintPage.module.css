@@ -3,10 +3,9 @@
   flex: auto;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   width: 100%;
   text-align: center;
-  padding: 50px 0;
   background: #2c387e;
   color: white;
 }
@@ -43,4 +42,12 @@
   text-transform: uppercase;
   letter-spacing: 0.1rem;
   margin: 1rem auto;
+}
+.featuresList {
+  margin-bottom: 2em;
+}
+
+.featuresList li {
+  margin-bottom: 0.5em;
+  font-size: 1.4rem;
 }

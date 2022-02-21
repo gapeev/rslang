@@ -19,7 +19,7 @@ import classes from './SprintPage.module.css';
 const DESCRIBE_GAME =
   'Спринт - тренировка на скорость. Попробуй угадать как можно больше слов за минуту.';
 const TITLE_GAME = 'SPRINT';
-const CHOOSE_DIFFICULT = 'Выбери сложность игры : ';
+const CHOOSE_DIFFICULT = 'Выбери раздел : ';
 
 type propsWelcome = {
   isReady: boolean;
@@ -52,12 +52,7 @@ export const WelcomeSprint: React.FC<propsWelcome> = ({
   }, [dispatch, user]);
 
   return (
-    <Box
-      sx={{
-        minHeight: '84vh',
-      }}
-      className={classes.start_screen}
-    >
+    <Box className={classes.start_screen}>
       <Box className={classes.block_title}>
         <Typography
           sx={{
@@ -77,6 +72,10 @@ export const WelcomeSprint: React.FC<propsWelcome> = ({
         >
           {DESCRIBE_GAME}
         </Typography>
+        <ul className={classes.featuresList}>
+          <li>В тренировке можно использовать мышь</li>
+          <li>Используйте клавиши влево и вправо</li>
+        </ul>
       </Box>
       <Box className={classes.block_control}>
         <FormControl>
@@ -101,6 +100,10 @@ export const WelcomeSprint: React.FC<propsWelcome> = ({
             {ArrayDifficult.map((item: string, idx: number) => {
               return (
                 <FormControlLabel
+                  sx={{
+                    border: '1px solid rgba(0, 0, 0, 0.23)',
+                    padding: '0.5rem',
+                  }}
                   key={idx}
                   control={<Radio value={item} />}
                   label={item}
