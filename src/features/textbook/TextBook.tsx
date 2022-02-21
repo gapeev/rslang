@@ -127,9 +127,16 @@ const TextBookPage = () => {
   }, [audio, audioList]);
   return (
     <Box className={backgroundGen(category)}>
-      <Container className={styles.paginationContainer}>
+      <Container
+        className={styles.paginationContainer}
+        sx={{
+          display: { xs: 'flex', sm: 'flex', md: 'block' },
+          flexDirection: { xs: 'column', sm: 'column', md: 'row' },
+        }}
+      >
         <Select
           value={category}
+          sx={{ mt: { xs: '10px', sm: '10px', md: '0px' } }}
           inputProps={{ 'aria-label': 'Without label' }}
           onChange={(event) => {
             setCategory(Number(event.target.value));
@@ -154,8 +161,6 @@ const TextBookPage = () => {
             count={pageQty}
             page={page}
             onChange={(_, num) => setPage(num)}
-            showFirstButton
-            showLastButton
             color="primary"
             sx={{ marginY: 3, marginX: 'auto' }}
             renderItem={(item) => (

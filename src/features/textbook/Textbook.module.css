@@ -19,9 +19,7 @@
   box-shadow: 0px 4px 3px -3px rgb(0 0 0 / 30%),
     0px 3px 3px 0px rgb(0 0 0 / 24%), 0px 3px 5px 0px rgb(0 0 0 / 22%);
 }
-.button {
-  margin: 0px 20px !important;
-}
+
 .cardContent {
   display: flex !important;
   padding: 10px !important;

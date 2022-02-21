@@ -29,7 +29,13 @@ function TextBookCard(props: CardParam) {
   const [color, setColor] = useState(defaultColor);
   return (
     <Card key={props.id} className={`${styles.card} ${color}`}>
-      <Container className={styles.cardContent}>
+      <Container
+        className={styles.cardContent}
+        sx={{
+          display: { xs: 'flex', sm: 'flex', md: 'block' },
+          flexDirection: { xs: 'column', sm: 'column', md: 'row' },
+        }}
+      >
         <CardMedia
           component="img"
           image={props.url + props.image}

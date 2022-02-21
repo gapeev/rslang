@@ -42,6 +42,7 @@ export function Footer() {
                 href="https://github.com/Uladziby"
                 color="inherit"
                 underline="hover"
+                sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }}
               >
                 Uladziby
               </Link>
@@ -49,6 +50,7 @@ export function Footer() {
                 href="https://github.com/alepashkou"
                 color="inherit"
                 underline="hover"
+                sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }}
               >
                 Alepashkou
               </Link>
@@ -56,6 +58,7 @@ export function Footer() {
                 href="https://github.com/gapeev"
                 color="inherit"
                 underline="hover"
+                sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }}
               >
                 Gapeev
               </Link>
