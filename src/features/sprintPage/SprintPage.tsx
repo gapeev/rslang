@@ -5,7 +5,6 @@ import fetchWords from './utils';
 import { GameSprint } from './GameSprint';
 import { WelcomeSprint } from './welcomeSprint';
 import {
-  setFinishGame,
   setGameAgain,
   setGroupGame,
   setIsTextBook,
@@ -13,13 +12,8 @@ import {
 } from './sprintSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { randomNumber } from './sprintApi';
-
-type UrlParams = {
-  group: number | null;
-  page: number | null;
-};
 
 export const SpringPage: React.FC = () => {
   const [group, setGroup] = useState<number>(0);
@@ -45,8 +39,10 @@ export const SpringPage: React.FC = () => {
   useEffect(() => {
     dispatch(setGameAgain());
     dispatch(setIsTextBook(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (isTextBook) {
       setIsReady(true);

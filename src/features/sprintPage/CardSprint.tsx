@@ -1,5 +1,5 @@
 import { Box, Typography, Grid, Button } from '@mui/material';
-import { SyntheticEvent, useEffect, useRef } from 'react';
+import { SyntheticEvent, useEffect } from 'react';
 import { RootState } from '../../app/store';
 import { useSelector } from 'react-redux';
 
@@ -15,7 +15,6 @@ export const CardSprint: React.FC<PropsCardSprint> = ({
   translate,
 }) => {
   const isFinish = useSelector((store: RootState) => store.sprint.isFinish);
-  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -31,6 +30,7 @@ export const CardSprint: React.FC<PropsCardSprint> = ({
 
     window.addEventListener('keyup', handleKeyDown);
     return () => window.removeEventListener('keyup', handleKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleMouse = (e: SyntheticEvent<HTMLButtonElement>) => {

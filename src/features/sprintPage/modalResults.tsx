@@ -12,7 +12,7 @@ import { TransitionProps } from '@mui/material/transitions';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setFinishGame, setGameAgain } from './sprintSlice';
+import { setGameAgain } from './sprintSlice';
 import { RootState } from '../../app/store';
 import { ISprintStat } from '../../common/Interfaces';
 import { calculateEffect } from './utils';
