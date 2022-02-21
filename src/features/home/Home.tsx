@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -11,8 +10,25 @@ import Typography from '@mui/material/Typography';
 import textbook from '../../assets/textbook.jpg';
 import audiochallenge from '../../assets/audiochallenge.jpg';
 import sprint from '../../assets/sprint.jpg';
+import { loadWords } from '../textbook/request/loadData';
+import { word } from '../textbook/interfaces';
+import { useState, useEffect } from 'react';
 
 export function Home() {
+  function getRandomInt(min: number, max: number) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
+  const [word, setWord] = useState<word>();
+  useEffect(() => {
+    loadWords(
+      `https://learnwords-team31.herokuapp.com/words?group=${getRandomInt(
+        0,
+        6
+      )}&page=${getRandomInt(0, 30)}`
+    ).then((data) => setWord(data.data[getRandomInt(0, 20)]));
+  }, []);
   return (
     <Container maxWidth="lg" sx={{ flexGrow: 1 }}>
       <Box
@@ -20,14 +36,15 @@ export function Home() {
           mt: '40px',
           mb: '40px',
           display: 'flex',
-          alignItems: 'start',
-          justifyContent: 'space-between',
+          alignItems: 'center',
+          justifyContent: 'center',
           gap: '30px',
+          flexWrap: 'wrap',
         }}
       >
-        <Card sx={{ maxWidth: 345, flex: 1 }}>
+        <Card sx={{ maxWidth: 260 }}>
           <CardActionArea component={Link} to="/textbook">
-            <CardHeader title="Электронный учебник" />
+            <CardHeader title="Учебник" />
             <CardMedia
               component="img"
               height="194"
@@ -43,7 +60,7 @@ export function Home() {
           </CardActionArea>
         </Card>
 
-        <Card sx={{ maxWidth: 345, flex: 1 }}>
+        <Card sx={{ maxWidth: 260 }}>
           <CardActionArea component={Link} to="/audiochallenge">
             <CardHeader title="Аудиовызов" />
             <CardMedia
@@ -69,7 +86,7 @@ export function Home() {
           </CardActionArea>
         </Card>
 
-        <Card sx={{ maxWidth: 345, flex: 1 }}>
+        <Card sx={{ maxWidth: 260 }}>
           <CardActionArea component={Link} to="/sprint">
             <CardHeader title="Спринт" />
             <CardMedia
@@ -83,6 +100,35 @@ export function Home() {
                 Суть проста: в игровом поле появляются английские слова, к
                 которым предлагается перевод. Задача "спринтера" — определить,
                 верен предложенный перевод или нет. И все это — на время!
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        </Card>
+
+        <Card
+          sx={{ maxWidth: 260 }}
+          onClick={() => {
+            loadWords(
+              `https://learnwords-team31.herokuapp.com/words?group=${getRandomInt(
+                0,
+                6
+              )}&page=${getRandomInt(0, 30)}`
+            ).then((data) => setWord(data.data[getRandomInt(0, 20)]));
+          }}
+        >
+          <CardActionArea>
+            <CardHeader title="Случайное слово" />
+            <CardMedia
+              component="img"
+              height="194"
+              src={`https://learnwords-team31.herokuapp.com/${
+                word?.image || 'files/27_2934.jpg'
+              }`}
+              alt="Books"
+            />
+            <CardContent>
+              <Typography color="text.secondary">
+                {word?.word + ' - ' + word?.wordTranslate}
               </Typography>
             </CardContent>
           </CardActionArea>
