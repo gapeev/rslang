@@ -1,0 +1,53 @@
+.start_screen {
+  display: flex;
+  flex: auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  text-align: center;
+  background: #2c387e;
+  color: white;
+}
+
+.icon_answers {
+  opacity: 0.2;
+  transform: scale(1.5);
+  transition: 0.5s ease-in-out;
+}
+.active {
+  opacity: 1;
+  transform: scale(2);
+}
+.star {
+  padding: 1rem;
+  color: grey;
+  opacity: 0.2;
+  transition: 1s ease-in-out;
+}
+.star_active {
+  padding: 1rem;
+  color: #ffd600;
+  opacity: 1;
+  transform: scale(1.5);
+  transition: 0.5s ease-in-out;
+}
+.sprint__score {
+  font-size: 0.9rem;
+  border: 3px solid #ffc53d;
+  padding: 0.4rem 1rem;
+  border-radius: 2rem;
+  color: #ffc53d;
+  font-family: 'Gilroy-Bold';
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  margin: 1rem auto;
+}
+.featuresList {
+  margin-bottom: 2em;
+}
+
+.featuresList li {
+  margin-bottom: 0.5em;
+  font-size: 1.4rem;
+}

@@ -1,0 +1,49 @@
+.container_timer {
+  display: flex;
+  flex-direction: row;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+  width: 10rem;
+  justify-content: space-around;
+}
+
+.timer_seconds-title,
+.timer_minutes-title {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  font-size: 20px;
+  font-family: Ruda;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 15px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #ffd600;
+}
+.timer_minutes-counter,
+.timer_seconds-counter {
+  display: flex;
+  width: 100%;
+  padding: 1%;
+  justify-content: center;
+  box-sizing: border-box;
+  border-radius: 6px;
+  font-family: Ruda;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 3.4rem;
+  line-height: 81px;
+  color: #706866;
+}
+
+.timer_middle {
+  font-family: Ruda;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 6.4rem;
+  line-height: 81px;
+  display: flex;
+  align-items: center;
+}

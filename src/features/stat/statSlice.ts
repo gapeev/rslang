@@ -72,7 +72,6 @@ export const statSlice = createSlice({
       gameStatistics.correctAnswers += Number(isRight);
       gameStatistics.wrongAnswers += Number(!isRight);
       gameStatistics.answersCount += 1;
-
       if (isNew) {
         newWordStatistics[date] = (newWordStatistics[date] ?? 0) + 1;
         gameStatistics.newWords += 1;
@@ -103,18 +102,40 @@ export const statSlice = createSlice({
 
       setStatistics(state.statistics, state.user);
     },
+    statLearnedWord: (state, action: PayloadAction<boolean>) => {
+      const date = getCurrentDateForStatistics();
+
+      state.statistics.optional.wordStatistics[date] =
+        (state.statistics.optional.wordStatistics[date] ?? 0) +
+        (action.payload ? 1 : -1) * 1;
+
+      setStatistics(state.statistics, state.user);
+    },
+    setStatSprint(state, action) {
+      state.statistics.optional.gameStatistics.sprint = action.payload;
+      //setStatistics(state.statistics, state.user);
+    },
+    /*  setNewWord(state) {
+      const date = getCurrentDateForStatistics();
+      state.statistics.optional.newWordStatistics[date] += 1;
+      setStatistics(state.statistics, state.user);
+    }, */
+    /*  setLearnedWord(state, action) {
+      state.statistics.optional.gameStatistics.sprint.learnedWords += 1;
+      setStatistics(state.statistics, state.user);
+    }, */
   },
   extraReducers: (builder) => {
     builder.addCase(statInit.fulfilled, (state, action) => {
       const { user, statistics } = action.payload;
-      console.log(statistics); // TODO: DEV ONLY!
+      //console.log(statistics); // TODO: DEV ONLY!
       state.user = user;
       state.statistics = statistics;
     });
   },
 });
 
-export const { statWord } = statSlice.actions;
+export const { statWord, statLearnedWord, setStatSprint } = statSlice.actions;
 
 export const selectStatState = (state: RootState) => state.stat.statistics;
 

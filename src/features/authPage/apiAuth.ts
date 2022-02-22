@@ -1,3 +1,4 @@
+import { baseUrl } from '../../common/axios';
 import {
   IUserSignUp,
   IUserSignIn,
@@ -6,7 +7,6 @@ import {
 } from './../../common/Interfaces';
 import axios, { AxiosError } from 'axios';
 
-export const baseUrl = 'https://learnwords-team31.herokuapp.com';
 const usersURL = `${baseUrl}/users`;
 const signinUrl = `${baseUrl}/signin`;
 
