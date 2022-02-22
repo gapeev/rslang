@@ -150,7 +150,6 @@ export const audiochallengeSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(startGame.fulfilled, (state, action) => {
       const { words, wordSets } = action.payload;
-      console.log(words); // TODO: DEV ONLY!
       state.gameState = 'question';
       state.words = words;
       state.wordSets = wordSets;

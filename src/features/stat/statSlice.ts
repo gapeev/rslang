@@ -128,7 +128,6 @@ export const statSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(statInit.fulfilled, (state, action) => {
       const { user, statistics } = action.payload;
-      //console.log(statistics); // TODO: DEV ONLY!
       state.user = user;
       state.statistics = statistics;
     });

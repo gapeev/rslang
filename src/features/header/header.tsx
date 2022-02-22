@@ -46,7 +46,6 @@ export function Header() {
   const username = useSelector((state: RootState) => state.user.user);
   const isAuth = username !== '';
   useEffect(() => {
-    console.log(isAuth);
     isAuth ? setTextBtnLog('Выйти') : setTextBtnLog('Войти');
   }, [isAuth]);
 
