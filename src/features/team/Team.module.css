@@ -1,0 +1,25 @@
+.mainContainer {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 20px !important;
+  flex-wrap: wrap !important;
+  margin: auto !important;
+}
+.cardContainer {
+  margin: 10px;
+  padding: 10px !important;
+}
+.cardImg {
+  padding: 10px !important;
+}
+.githubContainer {
+  display: flex !important;
+  justify-content: center;
+  text-decoration: none;
+  color: #3f51b5;
+}
+.githubImg {
+  width: 30px !important;
+  padding-right: 10px !important;
+}
