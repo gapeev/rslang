@@ -129,7 +129,12 @@ export const statSlice = createSlice({
     builder.addCase(statInit.fulfilled, (state, action) => {
       const { user, statistics } = action.payload;
       state.user = user;
-      state.statistics = statistics;
+
+      const emptyStatistics = getEmptyStatistics();
+      state.statistics.optional = {
+        ...emptyStatistics.optional,
+        ...statistics.optional,
+      };
     });
   },
 });
